@@ -1,5 +1,5 @@
 <template>
-  <v-app toolbar>
+  <v-app toolbar v-resize:debounce="windowResize">
     <v-navigation-drawer class="hidden-md-and-up" persistent fixed :clipped="clipped" v-model="drawer">
       <v-list>
         <v-list-tile v-for="(link, i) in drawerLinks" :key="i" :to="link.to">
@@ -25,14 +25,21 @@
         <nuxt />
       </v-container>
     </main>
-    <chat></chat>
+    <chat :fullscreen="chatDialog.fullscreen"></chat>
   </v-app>
 </template>
 
 <script>
 import chat from '../components/chat.vue'
+import resize from 'vue-resize-directive'
 
 export default {
+    directives: {
+        resize,
+    },
+    components: {
+        chat
+    },
     data () {
         return {
             title: 'Lawn Care',
@@ -48,11 +55,19 @@ export default {
                 { name: 'Services', route: '/services' },
                 { name: 'Free Quote', route: '/quote' },
                 { name: 'Sign Up/Sign In', route: '/app' }
-            ]
+            ],
+            chatDialog: {
+                fullscreen: false
+            }
         }
     },
-    components: {
-        chat
+    mounted() {
+        this.chatDialog.fullscreen = window.innerWidth < 1024;
+    },
+    methods: {
+        windowResize() {
+            this.chatDialog.fullscreen = window.innerWidth < 1024;
+        }
     }
 }
 </script>
