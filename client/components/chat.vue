@@ -6,7 +6,7 @@
                 <v-icon>close</v-icon>
             </v-btn>
             <v-card id="chat-dialog">
-                <v-toolbar dark class="primary">
+                <v-toolbar dark class="primary" :fixed="fullscreen">
                     <v-toolbar-title>Chat with us</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn id="fullscreen-btn" icon @click.native="fullscreen = true" dark class="hidden-sm-and-down">
@@ -19,15 +19,21 @@
                         <v-icon>close</v-icon>
                     </v-btn>
                 </v-toolbar>
-                <v-card-title>
-                    <div class="headline">Use Google's location service?</div>
-                </v-card-title>
-                <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
-                    <v-btn class="green--text darken-1" flat="flat" @click.native="dialog = false">Agree</v-btn>
-                </v-card-actions>
+                <v-list id="chat-list" two-line :class="{ space_top: fullscreen }">
+                    <template v-for="item in items">
+                        <v-subheader v-if="item.header" v-text="item.header"></v-subheader>
+                        <v-divider v-else-if="item.divider" v-bind:inset="item.inset"></v-divider>
+                        <v-list-tile avatar v-else v-bind:key="item.title">
+                            <v-list-tile-avatar>
+                                <img v-bind:src="item.avatar"/>
+                            </v-list-tile-avatar>
+                            <v-list-tile-content>
+                                <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                                <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                            </v-list-tile-content>
+                        </v-list-tile>
+                    </template>
+                </v-list>
             </v-card>
         </v-dialog>
     </div>
@@ -37,7 +43,27 @@
 
     export default {
         data: () => ({
-            dialog: false
+            dialog: false,
+            items: [
+                { avatar: '/static/doc-images/lists/1.jpg', title: 'Brunch this weekend?', subtitle: "<span class='grey--text text--darken-2'>Ali Connors</span> — I'll be in your neighborhood doing errands this weekend. Do you want to hang out?" },
+                { divider: true, inset: true },
+                { avatar: '/static/doc-images/lists/2.jpg', title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>', subtitle: "<span class='grey--text text--darken-2'>to Alex, Scott, Jennifer</span> — Wish I could come, but I'm out of town this weekend." },
+                { divider: true, inset: true },
+                { avatar: '/static/doc-images/lists/3.jpg', title: 'Oui oui', subtitle: "<span class='grey--text text--darken-2'>Sandra Adams</span> — Do you have Paris recommendations? Have you ever been?" },
+                { divider: true, inset: true },
+                { avatar: '/static/doc-images/lists/4.jpg', title: 'Birthday gift', subtitle: "<span class='grey--text text--darken-2'>Trevor Hansen</span> — Have any ideas about what we should get Heidi for her birthday? Thanks" },
+                { divider: true, inset: true },
+                { avatar: '/static/doc-images/lists/5.jpg', title: 'Recipe to try', subtitle: "<span class='grey--text text--darken-2'>Britta Holt</span> — We should eat this: Grate, Squash, Corn, and tomatillo Tacos." },
+                { avatar: '/static/doc-images/lists/1.jpg', title: 'Brunch this weekend?', subtitle: "<span class='grey--text text--darken-2'>Ali Connors</span> — I'll be in your neighborhood doing errands this weekend. Do you want to hang out?" },
+                { divider: true, inset: true },
+                { avatar: '/static/doc-images/lists/2.jpg', title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>', subtitle: "<span class='grey--text text--darken-2'>to Alex, Scott, Jennifer</span> — Wish I could come, but I'm out of town this weekend." },
+                { divider: true, inset: true },
+                { avatar: '/static/doc-images/lists/3.jpg', title: 'Oui oui', subtitle: "<span class='grey--text text--darken-2'>Sandra Adams</span> — Do you have Paris recommendations? Have you ever been?" },
+                { divider: true, inset: true },
+                { avatar: '/static/doc-images/lists/4.jpg', title: 'Birthday gift', subtitle: "<span class='grey--text text--darken-2'>Trevor Hansen</span> — Have any ideas about what we should get Heidi for her birthday? Thanks" },
+                { divider: true, inset: true },
+                { avatar: '/static/doc-images/lists/5.jpg', title: 'Recipe to try', subtitle: "<span class='grey--text text--darken-2'>Britta Holt</span> — We should eat this: Grate, Squash, Corn, and tomatillo Tacos." },
+            ]
         }),
         props: {
             fullscreen: {
@@ -54,6 +80,10 @@
     .dialog__content
         z-index 6
         display unset
+    #chat-dialog
+        position relative
+    .space_top
+        margin-top 48px !important
     .dialog--persistent
         box-shadow unset !important
         #chat-dialog
@@ -61,6 +91,8 @@
             bottom: 85px;
             width: 350px;
             position: absolute;
+            max-height: 80vh;
+            overflow-y: auto;
     .dialog--fullscreen
         #chat-dialog
             top: 0;
@@ -70,4 +102,7 @@
             position: absolute;
         #fullscreen-btn
             display none
+    #chat-list
+        max-width 768px
+        margin 0 auto
 </style>
