@@ -26,7 +26,7 @@ module.exports = {
         vendor: ['vuetify'],
         extractCSS: true
     },
-    plugins: ['~plugins/vuetify.js'],
+    plugins: ['~plugins/plugins.js'],
     css: [
         { src: '~assets/style/app.styl', lang: 'styl' }
     ],
