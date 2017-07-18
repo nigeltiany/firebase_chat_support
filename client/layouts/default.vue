@@ -1,5 +1,5 @@
 <template>
-  <v-app dark toolbar footer>
+  <v-app toolbar>
     <v-navigation-drawer class="hidden-sm-and-up" persistent :clipped="clipped" v-model="drawer">
       <v-list>
         <v-list-tile v-for="(link, i) in drawerLinks" :key="i" :to="link.to">
@@ -21,7 +21,7 @@
       </v-toolbar-items>
     </v-toolbar>
     <main>
-      <v-container fluid>
+      <v-container>
         <nuxt />
       </v-container>
     </main>
