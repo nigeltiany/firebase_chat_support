@@ -25,10 +25,13 @@
         <nuxt />
       </v-container>
     </main>
+    <chat></chat>
   </v-app>
 </template>
 
 <script>
+import chat from '../components/chat.vue'
+
 export default {
     data () {
         return {
@@ -47,6 +50,9 @@ export default {
                 { name: 'Sign Up/Sign In', route: '/app' }
             ]
         }
+    },
+    components: {
+        chat
     }
 }
 </script>
