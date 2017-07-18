@@ -44,7 +44,15 @@
         data: () => ({
             dialog: false,
             dialogFS: false
-        })
+        }),
+        watch: {
+            dialog() {
+                this.dialogFS = false
+            },
+            dialogFS() {
+                this.dialog = false
+            }
+        }
     }
 
 </script>
