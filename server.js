@@ -2,6 +2,7 @@
 
 const Hapi = require('hapi');
 const Inert = require('inert');
+const socketConnection = require('./server_sockets/socket');
 
 const server = new Hapi.Server();
 server.connection({
@@ -50,6 +51,7 @@ server.start((err) => {
     if (err) {
         throw err;
     }
+    socketConnection.start();
     console.log('Server running at:', server.info.uri);
 });
 
