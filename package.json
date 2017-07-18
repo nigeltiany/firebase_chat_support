@@ -12,7 +12,7 @@
   "dependencies": {
     "hapi": "^16.4.3",
     "inert": "^4.2.0",
-    "nuxt": "0.10.7",
+    "nuxt": "^1.0.0-alpha.5",
     "vue-server-renderer": "latest",
     "vuetify": "^0.13.0"
   },
