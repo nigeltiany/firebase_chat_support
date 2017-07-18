@@ -6,6 +6,19 @@
                 <v-icon>close</v-icon>
             </v-btn>
             <v-card id="chat-dialog">
+                <v-toolbar dark class="primary">
+                    <v-toolbar-title>Chat with us</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn id="fullscreen-btn" icon @click.native="fullscreen = true" dark class="hidden-sm-and-down">
+                        <v-icon>launch</v-icon>
+                    </v-btn>
+                    <v-btn id="tiny-chat-btn" icon @click.native="fullscreen = false" dark class="hidden-sm-and-down" :class="{ hidden: !fullscreen }">
+                        <v-icon>branding_watermark</v-icon>
+                    </v-btn>
+                    <v-btn icon @click.native="dialog = false" dark>
+                        <v-icon>close</v-icon>
+                    </v-btn>
+                </v-toolbar>
                 <v-card-title>
                     <div class="headline">Use Google's location service?</div>
                 </v-card-title>
@@ -36,6 +49,8 @@
 </script>
 
 <style lang="stylus">
+    .hidden
+        display none
     .dialog__content
         z-index 6
         display unset
@@ -53,4 +68,6 @@
             bottom: 85px;
             width: 350px;
             position: absolute;
+        #fullscreen-btn
+            display none
 </style>
