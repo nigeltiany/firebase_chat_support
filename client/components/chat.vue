@@ -1,5 +1,7 @@
 <template>
     <div>
+        <chat-client event="welcome" :onData="welcomed"></chat-client>
+        <chat-client event="address" :onData="addressInfo"></chat-client>
         <v-dialog v-model="dialog" persistent hide-overlay :fullscreen="fullscreen">
             <v-btn slot="activator" class="blue darken-2" fixed bottom right hover dark fab v-badge="{ value: items.length, overlap: true, left: true }">
                 <v-icon>chat</v-icon>
@@ -59,6 +61,14 @@
         props: {
             fullscreen: {
                 type: Boolean
+            }
+        },
+        methods: {
+            welcomed(data) {
+                console.log(data)
+            },
+            addressInfo(data){
+                console.log(data)
             }
         }
     }
