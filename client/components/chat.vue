@@ -21,7 +21,7 @@
                         <v-icon>close</v-icon>
                     </v-btn>
                 </v-toolbar>
-                <v-list id="chat-list" two-line :class="{ space_top: fullscreen }">
+                <v-list id="chat-list" three-line :class="{ space_top: fullscreen }">
                     <template v-for="item in items">
                         <v-list-tile avatar v-bind:key="item.title">
                             <v-list-tile-avatar>
@@ -84,7 +84,9 @@
     #chat-dialog
         position relative
     .space_top
-        margin-top 48px !important
+        margin-top 64px !important
+    .list__tile__sub-title
+        overflow-y hidden
     .dialog--persistent
         box-shadow unset !important
         #chat-dialog
