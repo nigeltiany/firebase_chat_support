@@ -32,6 +32,7 @@
 <script>
 import chat from '../components/chat.vue'
 import resize from 'vue-resize-directive'
+import Firebase from 'firebase'
 
 export default {
     directives: {
@@ -39,6 +40,16 @@ export default {
     },
     components: {
         chat
+    },
+    created() {
+        Firebase.initializeApp({
+            apiKey: "AIzaSyA2qhaVfG2P7FlfZP7x80UysSiLrQr1ZZ4",
+            authDomain: "lawn-care-5feaf.firebaseapp.com",
+            databaseURL: "https://lawn-care-5feaf.firebaseio.com",
+            projectId: "lawn-care-5feaf",
+            storageBucket: "lawn-care-5feaf.appspot.com",
+            messagingSenderId: "517689819608"
+        })
     },
     data () {
         return {

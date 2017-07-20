@@ -23,7 +23,7 @@ module.exports = {
     ** Build configuration
     */
     build: {
-        vendor: ['vuetify'],
+        vendor: ['vuetify','firebase'],
         extractCSS: true
     },
     plugins: [
