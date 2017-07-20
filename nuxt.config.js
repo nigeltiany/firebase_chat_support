@@ -23,8 +23,15 @@ module.exports = {
     ** Build configuration
     */
     build: {
-        vendor: ['vuetify','firebase'],
-        extractCSS: true
+        vendor: ['vuetify'],
+        extractCSS: true,
+        extend (config, { isServer }) {
+            if (isServer) {
+                config.resolve.alias['_firebase'] = '~firebase/server_firebase.js'
+            } else {
+                config.resolve.alias['_firebase'] = '~firebase/client_firebase.js'
+            }
+        }
     },
     plugins: [
         '~plugins/plugins.js',
