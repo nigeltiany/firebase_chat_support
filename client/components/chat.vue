@@ -28,8 +28,12 @@
                                 <img v-bind:src="item.avatar"/>
                             </v-list-tile-avatar>
                             <v-list-tile-content>
-                                <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                                <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                                <v-list-tile-title>
+                                    {{item.title}} <span v-if="item.replies_meta" class="grey--text text--lighten-1">{{item.replies_meta}}</span>
+                                </v-list-tile-title>
+                                <v-list-tile-sub-title>
+                                    <span class='grey--text text--darken-2'>{{item.sender}}</span> — {{item.message}}
+                                </v-list-tile-sub-title>
                             </v-list-tile-content>
                         </v-list-tile>
                         <v-divider inset></v-divider>
@@ -46,16 +50,8 @@
         data: () => ({
             dialog: false,
             items: [
-                { avatar: '/static/doc-images/lists/1.jpg', title: 'Brunch this weekend?', subtitle: "<span class='grey--text text--darken-2'>Ali Connors</span> — I'll be in your neighborhood doing errands this weekend. Do you want to hang out?" },
-                { avatar: '/static/doc-images/lists/2.jpg', title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>', subtitle: "<span class='grey--text text--darken-2'>to Alex, Scott, Jennifer</span> — Wish I could come, but I'm out of town this weekend." },
-                { avatar: '/static/doc-images/lists/3.jpg', title: 'Oui oui', subtitle: "<span class='grey--text text--darken-2'>Sandra Adams</span> — Do you have Paris recommendations? Have you ever been?" },
-                { avatar: '/static/doc-images/lists/4.jpg', title: 'Birthday gift', subtitle: "<span class='grey--text text--darken-2'>Trevor Hansen</span> — Have any ideas about what we should get Heidi for her birthday? Thanks" },
-                { avatar: '/static/doc-images/lists/5.jpg', title: 'Recipe to try', subtitle: "<span class='grey--text text--darken-2'>Britta Holt</span> — We should eat this: Grate, Squash, Corn, and tomatillo Tacos." },
-                { avatar: '/static/doc-images/lists/1.jpg', title: 'Brunch this weekend?', subtitle: "<span class='grey--text text--darken-2'>Ali Connors</span> — I'll be in your neighborhood doing errands this weekend. Do you want to hang out?" },
-                { avatar: '/static/doc-images/lists/2.jpg', title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>', subtitle: "<span class='grey--text text--darken-2'>to Alex, Scott, Jennifer</span> — Wish I could come, but I'm out of town this weekend." },
-                { avatar: '/static/doc-images/lists/3.jpg', title: 'Oui oui', subtitle: "<span class='grey--text text--darken-2'>Sandra Adams</span> — Do you have Paris recommendations? Have you ever been?" },
-                { avatar: '/static/doc-images/lists/4.jpg', title: 'Birthday gift', subtitle: "<span class='grey--text text--darken-2'>Trevor Hansen</span> — Have any ideas about what we should get Heidi for her birthday? Thanks" },
-                { avatar: '/static/doc-images/lists/5.jpg', title: 'Recipe to try', subtitle: "<span class='grey--text text--darken-2'>Britta Holt</span> — We should eat this: Grate, Squash, Corn, and tomatillo Tacos." },
+                { avatar: '/static/doc-images/lists/1.jpg', title: 'Brunch this weekend?', replies_meta: 0, sender: "Ali Connors", message: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?" },
+                { avatar: '/static/doc-images/lists/2.jpg', title: 'Summer BBQ', replies_meta: 4, sender: 'Alex, Scott, Jennifer', message: "Wish I could come, but I'm out of town this weekend." }
             ]
         }),
         props: {
