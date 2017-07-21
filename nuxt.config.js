@@ -37,7 +37,7 @@ module.exports = {
     },
     plugins: [
         '~plugins/plugins.js',
-        { src: '~plugins/client_only.js', ssr: false }
+        // { src: '~plugins/client_only.js', ssr: false }
     ],
     css: [
         { src: '~assets/style/app.styl', lang: 'styl' }
