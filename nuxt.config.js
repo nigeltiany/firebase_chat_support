@@ -1,3 +1,5 @@
+const path = require('path')
+const clientSourceDir = 'client/'
 module.exports = {
     /*
     ** Headers of the page
@@ -14,7 +16,7 @@ module.exports = {
             { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
         ]
     },
-    srcDir: 'client/',
+    srcDir: clientSourceDir,
     /*
     ** Customize the progress-bar color
     */
@@ -25,11 +27,11 @@ module.exports = {
     build: {
         vendor: ['vuetify'],
         extractCSS: true,
-        extend (config, { isServer }) {
+        extend (config, { isClient, isServer }) {
             if (isServer) {
-                config.resolve.alias['_firebase'] = '~firebase/server_firebase.js'
-            } else {
-                config.resolve.alias['_firebase'] = '~firebase/client_firebase.js'
+                config.resolve.alias['_firebase'] = path.join(__dirname, clientSourceDir, 'firebase/server_firebase.js')
+            } else if (isClient) {
+                config.resolve.alias['_firebase'] = path.join(__dirname, clientSourceDir, 'firebase/client_firebase.js')
             }
         }
     },
