@@ -46,7 +46,7 @@
 
 <script>
 
-    import { firebase, firebase_DB } from '../firebase'
+    import firebase from '../firebase'
 
     export default {
         data: () => ({
@@ -62,16 +62,14 @@
             }
         },
         created() {
-            firebase.auth().signInAnonymously().catch(function(error) {
-                console.log(error)
-            })
-            firebase.auth().onAuthStateChanged(function(user) {
+            firebase.signInAnonymously()
+            firebase.authStateChanged((user, database) => {
                 if (user) {
-                    firebase_DB.ref('users/' + user.uid).set({
+                    database.ref('users/' + user.uid).set({
                         userID: user.uid
                     });
                 }
-            });
+            })
         },
         methods: {
             welcomed(data) {
