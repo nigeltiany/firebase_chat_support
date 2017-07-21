@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-dialog v-model="dialog" persistent hide-overlay :fullscreen="fullscreen">
-            <v-btn slot="activator" class="blue darken-2" fixed bottom right hover dark fab v-badge="{ value: items.length, overlap: true, left: true }">
+            <v-btn slot="activator" class="blue darken-2" fixed bottom right hover dark fab v-badge="{ value: messages.length, overlap: true, left: true }">
                 <v-icon>chat</v-icon>
                 <v-icon>close</v-icon>
             </v-btn>
@@ -20,17 +20,17 @@
                     </v-btn>
                 </v-toolbar>
                 <v-list id="chat-list" three-line :class="{ space_top: fullscreen }">
-                    <template v-for="item in items">
-                        <v-list-tile avatar v-bind:key="item.title">
+                    <template v-for="message in messages">
+                        <v-list-tile avatar v-bind:key="message.title">
                             <v-list-tile-avatar>
-                                <img v-bind:src="item.avatar"/>
+                                <img v-bind:src="message.avatar"/>
                             </v-list-tile-avatar>
                             <v-list-tile-content>
                                 <v-list-tile-title>
-                                    {{item.title}} <span v-if="item.replies_meta" class="grey--text text--lighten-1">{{item.replies_meta}}</span>
+                                    {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
                                 </v-list-tile-title>
                                 <v-list-tile-sub-title>
-                                    <span class='grey--text text--darken-2'>{{item.sender}}</span> — {{item.message}}
+                                    <span class='grey--text text--darken-2'>{{message.sender}}</span> — {{message.message}}
                                 </v-list-tile-sub-title>
                             </v-list-tile-content>
                         </v-list-tile>
@@ -49,10 +49,7 @@
     export default {
         data: () => ({
             dialog: false,
-            items: [
-                { avatar: '/static/doc-images/lists/1.jpg', title: 'Brunch this weekend?', replies_meta: 0, sender: "Ali Connors", message: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?" },
-                { avatar: '/static/doc-images/lists/2.jpg', title: 'Summer BBQ', replies_meta: 4, sender: 'Alex, Scott, Jennifer', message: "Wish I could come, but I'm out of town this weekend." }
-            ]
+            messages: []
         }),
         props: {
             fullscreen: {
@@ -66,6 +63,10 @@
                     database.ref('users/' + user.uid).set({
                         userID: user.uid
                     });
+
+                    firebase.onNewMessage((message) => {
+                        this.messages.push(message.val())
+                    })
                 }
             })
         },

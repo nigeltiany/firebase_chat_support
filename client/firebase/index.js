@@ -16,6 +16,18 @@ export default new class firebase {
         })
 
         this.database = createfireBaseDB()
+        this.auth = this.firebase.auth()
+    }
+
+    static userIsAuthenticated() {
+        if(this.auth.currentUser) {
+            return true
+        }
+        return false
+    }
+
+    user() {
+        return this.auth.currentUser
     }
 
     signInAnonymously() {
@@ -28,6 +40,12 @@ export default new class firebase {
         this.firebase.auth().onAuthStateChanged((user) => {
             callback(user, this.database)
         });
+    }
+
+    onNewMessage(callback) {
+        this.database.ref('messages/'+ this.user().uid).on('value', message => {
+            callback(message)
+        })
     }
 
 }
