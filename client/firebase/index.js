@@ -1,8 +1,7 @@
 // this is aliased in webpack config based on server/client build
-import { firebase } from '_firebase'
+import { createFireBase, createfireBaseDB } from '_firebase'
 
-const Firebase = firebase({
-    version: '/v0',
+export const firebase = createFireBase({
     config: {
         apiKey: "AIzaSyA2qhaVfG2P7FlfZP7x80UysSiLrQr1ZZ4",
         authDomain: "lawn-care-5feaf.firebaseapp.com",
@@ -12,3 +11,5 @@ const Firebase = firebase({
         messagingSenderId: "517689819608"
     }
 })
+
+export const firebase_DB = createfireBaseDB()

@@ -1,7 +1,9 @@
-import Firebase from 'firebase/app'
-import 'firebase/database'
+import firebase from 'firebase'
 
-export function firebase ({ config, version }) {
-    Firebase.initializeApp(config)
-    return Firebase.database().ref(version)
+export function createFireBase ({ config }) {
+    return firebase.initializeApp(config)
+}
+
+export function createfireBaseDB() {
+    return firebase.database()
 }

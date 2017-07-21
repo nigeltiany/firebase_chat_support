@@ -1,16 +1,25 @@
-import Firebase from 'firebase'
+import firebase from 'firebase'
 
-export function firebase ({ config, version }) {
-    let api
+export function createFireBase ({ config }) {
+    let FIREBASE
     // this piece of code may run multiple times in development mode,
-    // so we attach the instantiated API to `process` to avoid duplications
-    if (process.__API__) {
-        api = process.__API__
+    // so we attach the instantiated FIREBASE to `process` to avoid duplications
+    if (process.__FIREBASE__) {
+        FIREBASE = process.__FIREBASE__
     } else {
-        Firebase.initializeApp(config)
-        api = process.__API__ = Firebase.database().ref(version)
-
-        api.onServer = true
+        FIREBASE = process.__FIREBASE__ = firebase.initializeApp(config)
+        FIREBASE.onServer = true
     }
-    return api
+    return FIREBASE
+}
+
+export function createfireBaseDB() {
+    let FIREBASE_DB
+    if (process.__FIREBASE_DB__) {
+        FIREBASE_DB = process.__FIREBASE_DB__
+    } else {
+        FIREBASE_DB = process.__FIREBASE_DB__ = firebase.database()
+        FIREBASE_DB.onServer = true
+    }
+    return FIREBASE_DB
 }

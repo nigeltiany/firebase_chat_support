@@ -46,7 +46,7 @@
 
 <script>
 
-    import { firebase } from '../firebase'
+    import { firebase, firebase_DB } from '../firebase'
 
     export default {
         data: () => ({
@@ -60,6 +60,18 @@
             fullscreen: {
                 type: Boolean
             }
+        },
+        created() {
+            firebase.auth().signInAnonymously().catch(function(error) {
+                console.log(error)
+            })
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    firebase_DB.ref('users/' + user.uid).set({
+                        userID: user.uid
+                    });
+                }
+            });
         },
         methods: {
             welcomed(data) {
