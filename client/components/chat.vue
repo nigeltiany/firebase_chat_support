@@ -20,7 +20,7 @@
                     </v-btn>
                 </v-toolbar>
                 <v-list id="chat-list" three-line :class="{ space_top: fullscreen }">
-                    <template v-for="message in messages">
+                    <template v-for="message in messages" v-if="messages.length">
                         <v-list-tile avatar v-bind:key="message.title">
                             <v-list-tile-avatar>
                                 <img v-bind:src="message.avatar"/>
