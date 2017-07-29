@@ -7,6 +7,7 @@ module.exports = functions.database.ref('/users/{userID}').onCreate(event => {
         title: 'Welcome to Lawn Care',
         sender: "Nigel Tiany",
         senderID: "SomeID_ndjnkoieoan",
-        message: "Welcome to lawn care"
+        message: "Welcome to lawn care",
+        recipients: [event.params.userID] // + senderID
     })
 })
