@@ -57,18 +57,20 @@
             }
         },
         created() {
-            firebase.signInAnonymously()
-            firebase.authStateChanged((user, database) => {
-                if (user) {
-                    database.ref('users/' + user.uid).set({
-                        userID: user.uid
-                    });
+            if (!firebase.auth().currentUser) {
+                firebase.signInAnonymously()
+                firebase.authStateChanged((user, database) => {
+                    if (user) {
+                        database.ref('users/' + user.uid).set({
+                            uid: user.uid
+                        });
 
-                    firebase.onNewMessage((message) => {
-                        this.messages.push(message.val())
-                    })
-                }
-            })
+                        firebase.onNewMessage((message) => {
+                            this.messages.push(message.val())
+                        })
+                    }
+                })
+            }
         },
         methods: {
         }
