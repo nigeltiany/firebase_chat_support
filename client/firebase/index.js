@@ -44,7 +44,7 @@ export default new class firebase {
 
     onNewMessage(callback) {
         this.database.ref('messages/'+ this.user().uid).on('child_added', message => {
-            callback(message)
+            callback(message.val())
         })
     }
 
