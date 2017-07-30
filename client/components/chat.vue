@@ -30,7 +30,7 @@
                                     {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
                                 </v-list-tile-title>
                                 <v-list-tile-sub-title>
-                                    <span class='grey--text text--darken-2'>{{message.sender}}</span> — {{message.message}}
+                                    <span class='grey--text text--darken-2'>{{ commaSplit(message.participants) }}</span> — {{message.message}}
                                 </v-list-tile-sub-title>
                             </v-list-tile-content>
                         </v-list-tile>
@@ -57,22 +57,23 @@
             }
         },
         created() {
-            if (!firebase.auth().currentUser) {
-                firebase.signInAnonymously()
-                firebase.authStateChanged((user, database) => {
-                    if (user) {
-                        database.ref('users/' + user.uid).set({
-                            uid: user.uid
-                        });
+            firebase.signInAnonymously()
+            firebase.authStateChanged((user, database) => {
+                if (user) {
+                    database.ref('users/' + user.uid).set({
+                        uid: user.uid
+                    });
 
-                        firebase.onNewMessage((message) => {
-                            this.messages.push(message.val())
-                        })
-                    }
-                })
-            }
+                    firebase.onNewMessage((message) => {
+                        this.messages.push(message.val())
+                    })
+                }
+            })
         },
         methods: {
+            commaSplit(array) {
+                return array ? array.join(' ,') : 'Team'
+            }
         }
     }
 
