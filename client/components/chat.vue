@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-dialog v-model="dialog" persistent hide-overlay :fullscreen="fullscreen">
-            <v-btn slot="activator" class="blue darken-2" fixed bottom right hover dark fab v-badge="{ value: messages.length, overlap: true, left: true }">
+            <v-btn slot="activator" class="blue darken-2" fixed bottom right hover dark fab v-badge="{ value: messageCount, overlap: true, left: true }">
                 <v-icon>chat</v-icon>
                 <v-icon>close</v-icon>
             </v-btn>
@@ -20,22 +20,52 @@
                     </v-btn>
                 </v-toolbar>
                 <v-list id="chat-list" three-line :class="{ space_top: fullscreen }">
-                    <template v-for="message in messages" v-if="messages.length">
-                        <v-list-tile avatar v-bind:key="message.title">
+                    <template v-for="sender in userMessages()">
+                        <v-list-tile avatar v-bind:key="sender">
                             <v-list-tile-avatar>
-                                <img v-bind:src="message.avatar"/>
+                                <img v-bind:src="lastMessageBySender(sender).avatar"/>
                             </v-list-tile-avatar>
                             <v-list-tile-content>
                                 <v-list-tile-title>
-                                    {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
+                                    {{ lastMessageBySender(sender).title}} <span v-if="lastMessageBySender(sender).replies_meta" class="grey--text text--lighten-1">{{ lastMessageBySender(sender).replies_meta }}</span>
                                 </v-list-tile-title>
                                 <v-list-tile-sub-title>
-                                    <span class='grey--text text--darken-2'>{{ commaSplit(message.participants) }}</span> — {{message.message}}
+                                    <span class='grey--text text--darken-2'>{{ commaSplit(lastMessageBySender(sender).participants) }}</span> — {{ lastMessageBySender(sender).message }}
                                 </v-list-tile-sub-title>
                             </v-list-tile-content>
                         </v-list-tile>
                         <v-divider inset></v-divider>
                     </template>
+                    <!--<chat-im>-->
+                        <!--&lt;!&ndash; Message received from peer &ndash;&gt;-->
+                        <!--<div class="chat-other">-->
+                            <!--<div class="chat-user">-->
+                                <!--<img src="assets/linux-avatar.png">-->
+                            <!--</div>-->
+                            <!--<div class="chat-date">-->
+                                <!--7 minutes ago-->
+                            <!--</div>-->
+                            <!--<div class="chat-message">-->
+                                <!--<p>-->
+                                    <!--hey, if you type in your pw, it will show as stars-->
+                                <!--</p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash; Message sent by you &ndash;&gt;-->
+                        <!--<div class="chat-you">-->
+                            <!--<div class="chat-user">-->
+                                <!--<img src="assets/boy-avatar.png">-->
+                            <!--</div>-->
+                            <!--<div class="chat-date">-->
+                                <!--4 minutes ago-->
+                            <!--</div>-->
+                            <!--<div class="chat-message">-->
+                                <!--<p>-->
+                                    <!--hunter2-->
+                                <!--</p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</chat-im>-->
                 </v-list>
             </v-card>
         </v-dialog>
@@ -45,11 +75,16 @@
 <script>
 
     import firebase from '../firebase'
+    import _unionBy from 'lodash.unionby'
+    import chatIm from '../components/chat-im.vue'
+    import ChatIm from "./chat-im";
 
     export default {
+        components: {ChatIm},
         data: () => ({
             dialog: false,
-            messages: []
+            messageCount: 0,
+            messages: {}
         }),
         props: {
             fullscreen: {
@@ -64,8 +99,16 @@
                         uid: user.uid
                     });
 
-                    firebase.onNewMessage((message) => {
-                        this.messages.push(message.val())
+                    firebase.onNewMessage((msg) => {
+                        let message = msg.val()
+                        if (this.messages[message.recipients[1]]) {
+                            this.messages[message.recipients[1]].push(message)
+                        }
+                        else {
+                            this.messages[message.recipients[1]] = []
+                            this.messages[message.recipients[1]].push(message)
+                        }
+                        this.messageCount += 1
                     })
                 }
             })
@@ -73,6 +116,12 @@
         methods: {
             commaSplit(array) {
                 return array ? array.join(' ,') : 'Team'
+            },
+            userMessages() {
+                return Object.keys(this.messages)
+            },
+            lastMessageBySender(sender) {
+                return this.messages[sender][this.messages[sender].length-1]
             }
         }
     }
