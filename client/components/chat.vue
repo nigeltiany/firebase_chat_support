@@ -114,7 +114,7 @@
         },
         methods: {
             commaSplit(array) {
-                return array ? array.join(' ,') : 'Team'
+                return array ? array.join(', ') : 'Team'
             },
             userMessages() {
                 return Object.keys(this.messages)
