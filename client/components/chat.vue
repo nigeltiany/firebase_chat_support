@@ -7,6 +7,9 @@
             </v-btn>
             <v-card id="chat-dialog">
                 <v-toolbar dark class="primary" :fixed="fullscreen">
+                    <v-btn icon @click.native="viewAllMessages = true" dark :class="{ hidden: viewAllMessages }">
+                        <v-icon>arrow_back</v-icon>
+                    </v-btn>
                     <v-toolbar-title>Chat with us</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn id="fullscreen-btn" icon @click.native="fullscreen = true" dark class="hidden-sm-and-down">
@@ -19,9 +22,9 @@
                         <v-icon>close</v-icon>
                     </v-btn>
                 </v-toolbar>
-                <v-list id="chat-list" three-line :class="{ space_top: fullscreen }">
+                <v-list id="chat-list" three-line :class="{ space_top: fullscreen }" v-if="viewAllMessages">
                     <template v-for="sender in userMessages()">
-                        <v-list-tile avatar v-bind:key="sender">
+                        <v-list-tile avatar v-bind:key="sender" @click.native="viewSenderMessages(sender)">
                             <v-list-tile-avatar>
                                 <img v-bind:src="lastMessageBySender(sender).avatar"/>
                             </v-list-tile-avatar>
@@ -36,37 +39,8 @@
                         </v-list-tile>
                         <v-divider inset></v-divider>
                     </template>
-                    <!--<chat-im>-->
-                        <!--&lt;!&ndash; Message received from peer &ndash;&gt;-->
-                        <!--<div class="chat-other">-->
-                            <!--<div class="chat-user">-->
-                                <!--<img src="assets/linux-avatar.png">-->
-                            <!--</div>-->
-                            <!--<div class="chat-date">-->
-                                <!--7 minutes ago-->
-                            <!--</div>-->
-                            <!--<div class="chat-message">-->
-                                <!--<p>-->
-                                    <!--hey, if you type in your pw, it will show as stars-->
-                                <!--</p>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--&lt;!&ndash; Message sent by you &ndash;&gt;-->
-                        <!--<div class="chat-you">-->
-                            <!--<div class="chat-user">-->
-                                <!--<img src="assets/boy-avatar.png">-->
-                            <!--</div>-->
-                            <!--<div class="chat-date">-->
-                                <!--4 minutes ago-->
-                            <!--</div>-->
-                            <!--<div class="chat-message">-->
-                                <!--<p>-->
-                                    <!--hunter2-->
-                                <!--</p>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</chat-im>-->
                 </v-list>
+                <chat-im v-else :fullscreen="fullscreen" :messages="senderMessages"></chat-im>
             </v-card>
         </v-dialog>
     </div>
@@ -84,6 +58,8 @@
         data: () => ({
             dialog: false,
             messageCount: 0,
+            viewAllMessages: true,
+            senderMessages: [],
             messages: {}
         }),
         props: {
@@ -121,6 +97,10 @@
             },
             lastMessageBySender(sender) {
                 return this.messages[sender][this.messages[sender].length-1]
+            },
+            viewSenderMessages(sender) {
+                this.senderMessages = this.messages[sender]
+                this.viewAllMessages = false
             }
         }
     }
