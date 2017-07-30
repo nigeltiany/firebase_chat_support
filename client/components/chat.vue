@@ -99,8 +99,7 @@
                         uid: user.uid
                     });
 
-                    firebase.onNewMessage((msg) => {
-                        let message = msg.val()
+                    firebase.onNewMessage((message) => {
                         if (this.messages[message.recipients[1]]) {
                             this.messages[message.recipients[1]].push(message)
                         }
