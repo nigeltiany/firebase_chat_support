@@ -39,6 +39,11 @@
                         </v-list-tile>
                         <v-divider inset></v-divider>
                     </template>
+                    <div class="text-xs-center compose-btn">
+                        <v-btn small round primary dark>
+                            <v-icon small dark left>create</v-icon>New Chat
+                        </v-btn>
+                    </div>
                 </v-list>
                 <chat-im v-else :fullscreen="fullscreen" :messages="senderMessages"></chat-im>
             </v-card>
@@ -139,5 +144,10 @@
             display none
     #chat-list
         max-width 768px
-        margin 0 auto
+        margin 0 auto 52px auto
+    .compose-btn
+        position: absolute;
+        left: 0;
+        bottom: 12px;
+        right: 0;
 </style>
