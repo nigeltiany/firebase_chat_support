@@ -81,12 +81,12 @@
                     });
 
                     firebase.onNewMessage((message) => {
-                        if (this.messages[message.recipients[1]]) {
-                            this.messages[message.recipients[1]].push(message)
+                        if (this.messages[message.conversation_id]) {
+                            this.messages[message.conversation_id].push(message)
                         }
                         else {
-                            this.messages[message.recipients[1]] = []
-                            this.messages[message.recipients[1]].push(message)
+                            this.messages[message.conversation_id] = []
+                            this.messages[message.conversation_id].push(message)
                         }
                         this.messageCount += 1
                     })
