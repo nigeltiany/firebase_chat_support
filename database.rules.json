@@ -12,14 +12,23 @@
       "$uid": {
         ".read": "auth != null && auth.uid == $uid",
         ".write": "auth != null && auth.uid == $uid",
-        "recipients": {
-          ".write": "auth != null && root.child('customer-support-agents').hasChild(auth.uid)"
+        "$message_id": {
+          "conversation_id": {
+            ".write": "false"
+          },
+          "participants": {
+            ".write": "auth != null && root.child('customer-support-agents').hasChild(auth.uid)"
+          },
+          "recipients": {
+            ".write": "auth != null && root.child('customer-support-agents').hasChild(auth.uid)"
+          }
         }
       }
     },
     "customer-support-agents": {
       ".read": "auth != null",
-      ".write": "auth != null"
+      ".write": "auth != null",
+      ".indexOn": "lastClientAt"
     }
   }
 }
