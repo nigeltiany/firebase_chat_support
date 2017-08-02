@@ -13,6 +13,9 @@
         ".read": "auth != null && auth.uid == $uid",
         ".write": "auth != null && auth.uid == $uid",
         "$message_id": {
+          "auto": {
+            ".write": "false"
+          },
           "conversation_id": {
             ".write": "false"
           },
