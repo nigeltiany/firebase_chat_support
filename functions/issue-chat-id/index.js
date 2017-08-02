@@ -8,6 +8,7 @@ function guid(){
 
 module.exports = functions.database.ref('/messages/{User_ID}/{Message_ID}').onCreate(event => {
     if (!event.data.hasChild('conversation_id')) {
-        return admin.database().ref('/messages/' + event.params.User_ID + '/' + event.params.Message_ID + '/conversation_id').set(guid())
+        return admin.database().ref('/messages/' + event.params.User_ID + '/' + event.params.Message_ID)
+            .update({ conversation_id: guid() })
     }
 })
