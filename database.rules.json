@@ -1,7 +1,7 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null",
+    ".read": false,
+    ".write": false,
     "users": {
       "$uid": {
         ".read": "auth != null && auth.uid == $uid",
@@ -10,28 +10,44 @@
     },
     "messages": {
       "$uid": {
-        ".read": "auth != null && auth.uid == $uid",
-        ".write": "auth != null && auth.uid == $uid",
-        "$message_id": {
+        "$messageid": {
+          "title": {
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": "auth != null && auth.uid == $uid"
+          },
+          "sender": {
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": false
+          },
+          "message": {
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": "auth != null && auth.uid == $uid"
+          },
           "auto": {
-            ".write": "false"
+            ".read": false,
+            ".write": false
           },
           "conversation_id": {
-            ".write": "false"
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": false
           },
           "participants": {
+            ".read": "auth != null && auth.uid == $uid",
             ".write": "auth != null && root.child('customer-support-agents').hasChild(auth.uid)"
           },
           "recipients": {
+            ".read": false,
             ".write": "auth != null && root.child('customer-support-agents').hasChild(auth.uid)"
           }
         }
       }
     },
     "customer-support-agents": {
-      ".read": "auth != null",
-      ".write": "auth != null",
-      ".indexOn": "lastClientAt"
+      ".indexOn": "lastClientAt",
+      "$agentid": {
+        ".read": "auth != null && auth.uid == $agentid && root.child('customer-support-agents').hasChild(auth.uid)",
+        ".write": "auth != null && auth.uid == $agentid && root.child('customer-support-agents').hasChild(auth.uid)"
+      }
     }
   }
 }
