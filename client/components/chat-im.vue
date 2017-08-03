@@ -16,6 +16,14 @@
             </v-list-tile>
             <v-divider inset></v-divider>
         </template>
+
+        <v-text-field id="messageInput" label="Message" v-model="userMessage" counter max="300" full-width multi-line single-line auto-focus auto-grow rows="1"
+            v-on:blur="resizeTextArea(userMessage)">
+        </v-text-field>
+        <v-btn id="sendButton" fab small class="cyan accent-2" bottom right absolute @click.native.stop="dialog = !dialog">
+            <v-icon>send</v-icon>
+        </v-btn>
+
     </v-list>
 </template>
 
@@ -30,9 +38,26 @@
                 type: Boolean
             }
         },
+        data () {
+            return {
+                userMessage: ""
+            }
+        },
         methods: {
             commaSplit(array) {
                 return array ? array.join(', ') : 'Team'
+            },
+            resizeTextArea(text) {
+                if(text.replace(/\s/g, "") === ""){
+                    let input = document.getElementById('messageInput')
+                    input.style.height = "30px"
+                    input.value = input.value.trim()
+                }
+            }
+        },
+        watch: {
+            userMessage(text) {
+                this.resizeTextArea(text)
             }
         }
     }
@@ -41,4 +66,18 @@
 <style lang="stylus">
     .space_top
         margin-top 64px !important
+    .input-group--text-field label
+        left unset
+    .input-group--text-field.input-group--full-width
+        position: absolute !important;
+        background white
+        max-width 768px
+        bottom: 0;
+    .input-group--text-field .input-group__counter
+        margin-right: auto;
+    #messageInput
+        overflow-y hidden !important
+    #sendButton
+        bottom 6px
+
 </style>
