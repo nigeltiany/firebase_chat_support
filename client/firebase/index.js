@@ -43,9 +43,9 @@ export default new class firebase {
     }
 
     onNewMessage(callback) {
-        this.database.ref('messages/'+ this.user().uid).on('value', userMessages => {
+        this.database.ref('messages/'+ this.user().uid).on('value', (userMessages) => {
             let messages = userMessages.val()
-            Object.keys(messages).forEach((message) => {
+            Object.keys(messages).map((message) => {
                 if(messages[message].conversation_id) {
                     callback(messages[message])
                 }
