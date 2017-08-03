@@ -6,7 +6,7 @@
                 <v-icon>close</v-icon>
             </v-btn>
             <v-card id="chat-dialog">
-                <v-toolbar dark class="primary" :fixed="fullscreen">
+                <v-toolbar id="chat-tool-bar" dark class="primary" :fixed="fullscreen">
                     <v-btn icon @click.native="viewAllMessages = true" dark :class="{ hidden: viewAllMessages }">
                         <v-icon>arrow_back</v-icon>
                     </v-btn>
@@ -118,6 +118,8 @@
     .dialog__content
         z-index 6
         display unset
+    #chat-tool-bar
+        z-index: 1;
     #chat-dialog
         position relative
     .space_top
