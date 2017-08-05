@@ -1,5 +1,5 @@
 <template>
-    <v-list id="chat-list" three-line :class="{ space_top: fullscreen }">
+    <v-list id="chat-list" three-line :class="{ space_top: fullscreen, large_send_button: fullscreen }">
         <template v-for="message in messages" v-if="messages.length">
             <v-list-tile avatar v-bind:key="message.title">
                 <v-list-tile-avatar>
@@ -17,12 +17,20 @@
             <v-divider inset></v-divider>
         </template>
 
-        <v-text-field id="messageInput" label="Message" v-model="userMessage" counter max="300" full-width multi-line single-line auto-focus auto-grow rows="1"
-            v-on:blur="resizeTextArea(userMessage)">
-        </v-text-field>
-        <v-btn id="sendButton" fab small class="cyan accent-2" bottom right absolute @click.native.stop="dialog = !dialog">
-            <v-icon>send</v-icon>
-        </v-btn>
+        <div style="position: absolute; bottom: 0; width: 100%; max-width: 767px;">
+            <div style="position: relative; margin: 0 auto">
+                <v-text-field id="messageInput" label="Message"
+                    v-model="userMessage"
+                    counter max="300"
+                    full-width multi-line single-line auto-focus auto-grow rows="1"
+                    v-on:blur="resizeTextArea(userMessage)">
+                </v-text-field>
+                <v-btn id="sendButton" fab :small="!fullscreen" class="cyan accent-2"
+                       right absolute @click.native.stop="dialog = !dialog">
+                    <v-icon>send</v-icon>
+                </v-btn>
+            </div>
+        </div>
 
     </v-list>
 </template>
@@ -50,7 +58,7 @@
             resizeTextArea(text) {
                 if(text.replace(/\s/g, "") === ""){
                     let input = document.getElementById('messageInput')
-                    input.style.height = "30px"
+                    input.style.height = "42px"
                     input.value = input.value.trim()
                 }
             }
@@ -75,9 +83,12 @@
         bottom: 0;
     .input-group--text-field .input-group__counter
         margin-right: auto;
+        margin-left unset
+
     #messageInput
         overflow-y hidden !important
     #sendButton
-        bottom 6px
-
+        z-index: 2;
+        right 12px
+        bottom 12px
 </style>
