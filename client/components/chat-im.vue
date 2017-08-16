@@ -1,41 +1,177 @@
 <template>
-    <v-list id="chat-list" three-line :class="{ space_top: fullscreen, large_send_button: fullscreen }">
-        <template v-for="message in messages" v-if="messages.length">
-            <v-list-tile avatar v-bind:key="message.title">
-                <v-list-tile-avatar>
-                    <img v-bind:src="message.avatar"/>
-                </v-list-tile-avatar>
-                <v-list-tile-content>
-                    <v-list-tile-title>
-                        {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
-                    </v-list-tile-title>
-                    <v-list-tile-sub-title>
-                        <span class='grey--text text--darken-2'>{{ commaSplit(message.participants) }}</span> — {{ message.message }} {{ message.message }}
-                    </v-list-tile-sub-title>
-                </v-list-tile-content>
-            </v-list-tile>
-            <v-divider inset></v-divider>
-        </template>
 
-        <div style="position: absolute; bottom: 0; width: 100%; max-width: 767px;">
-            <div style="position: relative; margin: 0 auto">
+        <v-list id="chat-messages" :class="{ space_top: fullscreen }" three-line>
+
+            <template v-for="message in messages" v-if="messages.length">
+                <v-list-tile avatar v-bind:key="message.title">
+                    <v-list-tile-avatar>
+                        <img v-bind:src="message.avatar"/>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
+                        </v-list-tile-title>
+                        <v-list-tile-sub-title>
+                            <span class='grey--text text--darken-2'>{{ commaSplit(message.participants) }}</span> — {{ message.message }} {{ message.message }}
+                        </v-list-tile-sub-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider inset></v-divider>
+                <v-list-tile avatar v-bind:key="message.title">
+                    <v-list-tile-avatar>
+                        <img v-bind:src="message.avatar"/>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
+                        </v-list-tile-title>
+                        <v-list-tile-sub-title>
+                            <span class='grey--text text--darken-2'>{{ commaSplit(message.participants) }}</span> — {{ message.message }} {{ message.message }}
+                        </v-list-tile-sub-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider inset></v-divider>
+                <v-list-tile avatar v-bind:key="message.title">
+                    <v-list-tile-avatar>
+                        <img v-bind:src="message.avatar"/>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
+                        </v-list-tile-title>
+                        <v-list-tile-sub-title>
+                            <span class='grey--text text--darken-2'>{{ commaSplit(message.participants) }}</span> — {{ message.message }} {{ message.message }}
+                        </v-list-tile-sub-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider inset></v-divider>
+                <v-list-tile avatar v-bind:key="message.title">
+                    <v-list-tile-avatar>
+                        <img v-bind:src="message.avatar"/>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
+                        </v-list-tile-title>
+                        <v-list-tile-sub-title>
+                            <span class='grey--text text--darken-2'>{{ commaSplit(message.participants) }}</span> — {{ message.message }} {{ message.message }}
+                        </v-list-tile-sub-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider inset></v-divider>
+                <v-list-tile avatar v-bind:key="message.title">
+                    <v-list-tile-avatar>
+                        <img v-bind:src="message.avatar"/>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
+                        </v-list-tile-title>
+                        <v-list-tile-sub-title>
+                            <span class='grey--text text--darken-2'>{{ commaSplit(message.participants) }}</span> — {{ message.message }} {{ message.message }}
+                        </v-list-tile-sub-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider inset></v-divider>
+                <v-list-tile avatar v-bind:key="message.title">
+                    <v-list-tile-avatar>
+                        <img v-bind:src="message.avatar"/>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
+                        </v-list-tile-title>
+                        <v-list-tile-sub-title>
+                            <span class='grey--text text--darken-2'>{{ commaSplit(message.participants) }}</span> — {{ message.message }} {{ message.message }}
+                        </v-list-tile-sub-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider inset></v-divider>
+                <v-list-tile avatar v-bind:key="message.title">
+                    <v-list-tile-avatar>
+                        <img v-bind:src="message.avatar"/>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
+                        </v-list-tile-title>
+                        <v-list-tile-sub-title>
+                            <span class='grey--text text--darken-2'>{{ commaSplit(message.participants) }}</span> — {{ message.message }} {{ message.message }}
+                        </v-list-tile-sub-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider inset></v-divider>
+                <v-list-tile avatar v-bind:key="message.title">
+                    <v-list-tile-avatar>
+                        <img v-bind:src="message.avatar"/>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
+                        </v-list-tile-title>
+                        <v-list-tile-sub-title>
+                            <span class='grey--text text--darken-2'>{{ commaSplit(message.participants) }}</span> — {{ message.message }} {{ message.message }}
+                        </v-list-tile-sub-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider inset></v-divider>
+                <v-list-tile avatar v-bind:key="message.title">
+                    <v-list-tile-avatar>
+                        <img v-bind:src="message.avatar"/>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
+                        </v-list-tile-title>
+                        <v-list-tile-sub-title>
+                            <span class='grey--text text--darken-2'>{{ commaSplit(message.participants) }}</span> — {{ message.message }} {{ message.message }}
+                        </v-list-tile-sub-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider inset></v-divider>
+                <v-list-tile avatar v-bind:key="message.title">
+                    <v-list-tile-avatar>
+                        <img v-bind:src="message.avatar"/>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
+                        </v-list-tile-title>
+                        <v-list-tile-sub-title>
+                            <span class='grey--text text--darken-2'>{{ commaSplit(message.participants) }}</span> — {{ message.message }} {{ message.message }}
+                        </v-list-tile-sub-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-divider inset></v-divider>
+            </template>
+
+            <div style="position: absolute; bottom: 0; max-width: 768px; width: 100%; padding-top: 8px; background: #fff;">
+
                 <v-text-field id="messageInput" label="Message"
+                    :class="{
+                        with_large_button_space: fullscreen,
+                        with_small_button_space: !fullscreen
+                    }"
                     v-model="userMessage"
                     counter max="300"
-                    full-width multi-line single-line auto-focus auto-grow rows="1"
-                    v-on:blur="resizeTextArea(userMessage)">
+                    full-width textarea multi-line single-line auto-focus rows="1"
+                    @keypress.native.enter="addTextAreaRow"
+                    @keyup.native.delete="deleteTextAreaRow">
                 </v-text-field>
+
                 <v-btn id="sendButton" fab :small="!fullscreen" class="cyan accent-2"
-                       right absolute @click.native.stop="dialog = !dialog">
+                       right absolute @click.native.stop="userTypedMessage()">
                     <v-icon>send</v-icon>
                 </v-btn>
-            </div>
-        </div>
 
-    </v-list>
+            </div>
+
+        </v-list>
+
 </template>
 
 <script>
+
     export default {
         name: 'chat-im',
         props: {
@@ -51,21 +187,37 @@
                 userMessage: ""
             }
         },
+        created () {
+            document.getElementById('messageInput').setAttribute('wrap', 'hard')
+        },
         methods: {
             commaSplit(array) {
                 return array ? array.join(', ') : 'Team'
             },
-            resizeTextArea(text) {
-                if(text.replace(/\s/g, "") === ""){
-                    let input = document.getElementById('messageInput')
-                    input.style.height = "42px"
-                    input.value = input.value.trim()
-                }
+            deleteTextAreaRow(){
+                let text = this.userMessage
+                let rowsInText = text.split('\n').length
+                let textArea = document.getElementById('messageInput')
+                let lineHeight = parseInt(textArea.style.lineHeight) || 24
+
+                console.log('lineheight : ' + lineHeight)
+                console.log('textarea height : ' + parseInt(textArea.offsetHeight))
+                console.log('lineheight * rows in text : ' + lineHeight * rowsInText)
+//                if (rowsInText * lineHeight < parseInt(textArea.offsetHeight)) {
+//                    textArea.style.height = (rowsInText * lineHeight) + 'px'
+//                }
+            },
+            addTextAreaRow() {
+                let textArea = document.getElementById('messageInput')
+                textArea.setAttribute('rows', parseInt(textArea.getAttribute('rows')) + 1)
+            },
+            userTypedMessage() {
+                console.log(this.userMessage)
             }
         },
         watch: {
-            userMessage(text) {
-                this.resizeTextArea(text)
+            userMessage() {
+                console.log(this.userMessage)
             }
         }
     }
@@ -73,22 +225,53 @@
 
 <style lang="stylus">
     .space_top
-        margin-top 64px !important
+        margin-top 56px !important
+
+    .dialog--fullscreen > #chat-dialog > #chat-messages > li:first-child
+        margin-top 56px
+
+    .padding_bottom
+        padding-bottom 64px
+
     .input-group--text-field label
         left unset
-    .input-group--text-field.input-group--full-width
-        position: absolute !important;
-        background white
-        max-width 768px
-        bottom: 0;
+
     .input-group--text-field .input-group__counter
         margin-right: auto;
         margin-left unset
 
+    .dialog--persistent
+        #chat-messages
+            max-height: calc(80vh - 48px);
+
+    .dialog--fullscreen
+        #chat-messages
+            max-height: calc(100% - 56px);
+
+    #chat-messages
+        height: calc(100% - 48px);
+        margin-right -17px
+        overflow-y: scroll;
+        width unset
+        li
+            width 100%
+            max-width 767px
+        li:last-of-type
+            padding-bottom: 60px
+
     #messageInput
-        overflow-y hidden !important
+        width 100%
+
     #sendButton
         z-index: 2;
         right 12px
         bottom 12px
+
+    .with_large_button_space > .input-group__input
+        textarea
+            padding-right: 70px !important;
+    .with_small_button_space > .input-group__input
+        textarea
+            padding-right: 46px !important;
+
 </style>
