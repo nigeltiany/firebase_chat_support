@@ -33,54 +33,11 @@
                                     {{ lastMessageBySender(sender).title}} <span v-if="lastMessageBySender(sender).replies_meta" class="grey--text text--lighten-1">{{ lastMessageBySender(sender).replies_meta }}</span>
                                 </v-list-tile-title>
                                 <v-list-tile-sub-title>
-                                    <span class='grey--text text--darken-2'>{{ commaSplit(lastMessageBySender(sender).participants) }} </span> — {{ lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  }} {{
+                                    <span class='grey--text text--darken-2'>{{ commaSplit(lastMessageBySender(sender).participants) }} </span> — {{ lastMessageBySender(sender).message }}
                                 </v-list-tile-sub-title>
                             </v-list-tile-content>
                         </v-list-tile>
                         <v-divider inset></v-divider>
-                        <v-list-tile avatar v-bind:key="sender" @click.native="viewSenderMessages(sender)">
-                            <v-list-tile-avatar>
-                                <img v-bind:src="lastMessageBySender(sender).avatar"/>
-                            </v-list-tile-avatar>
-                            <v-list-tile-content>
-                                <v-list-tile-title>
-                                    {{ lastMessageBySender(sender).title}} <span v-if="lastMessageBySender(sender).replies_meta" class="grey--text text--lighten-1">{{ lastMessageBySender(sender).replies_meta }}</span>
-                                </v-list-tile-title>
-                                <v-list-tile-sub-title>
-                                    <span class='grey--text text--darken-2'>{{ commaSplit(lastMessageBySender(sender).participants) }} </span> — {{ lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  }} {{
-                                </v-list-tile-sub-title>
-                            </v-list-tile-content>
-                        </v-list-tile>
-                        <v-divider inset></v-divider>
-                        <v-list-tile avatar v-bind:key="sender" @click.native="viewSenderMessages(sender)">
-                            <v-list-tile-avatar>
-                                <img v-bind:src="lastMessageBySender(sender).avatar"/>
-                            </v-list-tile-avatar>
-                            <v-list-tile-content>
-                                <v-list-tile-title>
-                                    {{ lastMessageBySender(sender).title}} <span v-if="lastMessageBySender(sender).replies_meta" class="grey--text text--lighten-1">{{ lastMessageBySender(sender).replies_meta }}</span>
-                                </v-list-tile-title>
-                                <v-list-tile-sub-title>
-                                    <span class='grey--text text--darken-2'>{{ commaSplit(lastMessageBySender(sender).participants) }} </span> — {{ lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  }} {{
-                                </v-list-tile-sub-title>
-                            </v-list-tile-content>
-                        </v-list-tile>
-                        <v-divider inset></v-divider>
-                        <v-list-tile avatar v-bind:key="sender" @click.native="viewSenderMessages(sender)">
-                            <v-list-tile-avatar>
-                                <img v-bind:src="lastMessageBySender(sender).avatar"/>
-                            </v-list-tile-avatar>
-                            <v-list-tile-content>
-                                <v-list-tile-title>
-                                    {{ lastMessageBySender(sender).title}} <span v-if="lastMessageBySender(sender).replies_meta" class="grey--text text--lighten-1">{{ lastMessageBySender(sender).replies_meta }}</span>
-                                </v-list-tile-title>
-                                <v-list-tile-sub-title>
-                                    <span class='grey--text text--darken-2'>{{ commaSplit(lastMessageBySender(sender).participants) }} </span> — {{ lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  lastMessageBySender(sender).message }} {{  }} {{
-                                </v-list-tile-sub-title>
-                            </v-list-tile-content>
-                        </v-list-tile>
-                        <v-divider inset></v-divider>
-
                     </template>
                     <div class="text-xs-center compose-btn">
                         <v-btn small round primary dark>
@@ -204,6 +161,7 @@
         margin-right -17px
         overflow-y: scroll;
         width unset
+        min-height: 176px;
         li
             width 100%
             max-width 767px
