@@ -28,13 +28,11 @@
                     }"
                     v-model="userMessage"
                     counter max="300"
-                    full-width textarea multi-line single-line auto-focus rows="1"
-                    @keypress.native.enter="addTextAreaRow"
-                    @keyup.native.delete="deleteTextAreaRow">
+                    full-width textarea multi-line single-line auto-focus rows="1">
                 </v-text-field>
 
                 <v-btn id="sendButton" fab :small="!fullscreen" class="cyan accent-2"
-                       right absolute @click.native.stop="userTypedMessage()">
+                       right absolute @click.native.stop="sendMessage()">
                     <v-icon>send</v-icon>
                 </v-btn>
 
@@ -45,6 +43,8 @@
 </template>
 
 <script>
+
+    import TextAreaAutoGrow from 'textarea-autogrow'
 
     export default {
         name: 'chat-im',
@@ -61,37 +61,17 @@
                 userMessage: ""
             }
         },
-        created () {
-            document.getElementById('messageInput').setAttribute('wrap', 'hard')
+        mounted () {
+            let textArea = document.getElementById('messageInput')
+            textArea.setAttribute('wrap', 'hard')
+            new TextAreaAutoGrow(textArea)
         },
         methods: {
             commaSplit(array) {
                 return array ? array.join(', ') : 'Team'
             },
-            deleteTextAreaRow(){
-                let text = this.userMessage
-                let rowsInText = text.split('\n').length
-                let textArea = document.getElementById('messageInput')
-                let lineHeight = parseInt(textArea.style.lineHeight) || 24
+            sendMessage() {
 
-                console.log('lineheight : ' + lineHeight)
-                console.log('textarea height : ' + parseInt(textArea.offsetHeight))
-                console.log('lineheight * rows in text : ' + lineHeight * rowsInText)
-//                if (rowsInText * lineHeight < parseInt(textArea.offsetHeight)) {
-//                    textArea.style.height = (rowsInText * lineHeight) + 'px'
-//                }
-            },
-            addTextAreaRow() {
-                let textArea = document.getElementById('messageInput')
-                textArea.setAttribute('rows', parseInt(textArea.getAttribute('rows')) + 1)
-            },
-            userTypedMessage() {
-                console.log(this.userMessage)
-            }
-        },
-        watch: {
-            userMessage() {
-                console.log(this.userMessage)
             }
         }
     }
