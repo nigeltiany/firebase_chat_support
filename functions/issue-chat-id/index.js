@@ -15,7 +15,7 @@ module.exports = functions.database.ref('/messages/{User_ID}/{Message_ID}').onCr
                     members: [event.params.User_ID, !queued ? event.data.val().to : null],
                 }).then(() => {
                     if(queued) {
-                        return admin.database().ref('help_queue/').push().set(event.data.val())
+                        return admin.database().ref('help_queue/').push().set(Object.assign({}, event.data.val(), {createdAt: Date.now()}))
                     }
                 })
             })
