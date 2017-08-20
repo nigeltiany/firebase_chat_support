@@ -16,6 +16,7 @@
     "nuxt": "^1.0.0-alpha.5",
     "promise-polyfill": "^6.0.2",
     "socketcluster": "^6.2.3",
+    "textarea-autogrow": "^1.0.0",
     "uuid": "^3.1.0",
     "vue-resize-directive": "^1.0.0",
     "vue-server-renderer": "latest",
