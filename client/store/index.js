@@ -1,9 +1,14 @@
-export const state = () => ({
-  sidebar: false
+import Vuex from 'vuex'
+import user from './user'
+
+const store = () => new Vuex.Store({
+    state: {
+    },
+    mutations: {
+    },
+    modules: {
+        user
+    }
 })
 
-export const mutations = {
-  toggleSidebar (state) {
-    state.sidebar = !state.sidebar
-  }
-}
+export default store
