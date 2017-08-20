@@ -2,21 +2,21 @@
 
         <v-list id="chat-messages" :class="{ space_top: fullscreen }" three-line>
 
-            <template v-for="message in messages" v-if="messages.length">
-                <v-list-tile avatar v-bind:key="message.title">
-                    <v-list-tile-avatar>
+            <template v-for="(message, index) in messages" v-if="messages.length">
+                <div class="message-item" avatar v-bind:key="index">
+                    <v-list-tile-avatar class="message-avatar">
                         <img v-bind:src="message.avatar"/>
                     </v-list-tile-avatar>
-                    <v-list-tile-content>
-                        <v-list-tile-title>
-                            {{message.title}} <span v-if="message.replies_meta" class="grey--text text--lighten-1">{{message.replies_meta}}</span>
-                        </v-list-tile-title>
-                        <v-list-tile-sub-title>
-                            <span class='grey--text text--darken-2'>{{ commaSplit(message.participants) }}</span> — {{ message.message }}
-                        </v-list-tile-sub-title>
-                    </v-list-tile-content>
-                </v-list-tile>
-                <v-divider inset></v-divider>
+                    <div class="message-sender">
+                        {{ message.sender }}
+                    </div>
+                    <div class="message-content">
+                        {{ message.message }}
+                    </div>
+                    <div class="message-timestamp caption">
+                        9:50am
+                    </div>
+                </div>
             </template>
 
             <div style="position: absolute; bottom: 0; max-width: 768px; width: 100%; padding-top: 8px; background: #fff;">
@@ -62,16 +62,14 @@
             }
         },
         mounted () {
-            let textArea = document.getElementById('messageInput')
-            textArea.setAttribute('wrap', 'hard')
-            new TextAreaAutoGrow(textArea)
+            new TextAreaAutoGrow(document.getElementById('messageInput'))
         },
         methods: {
             commaSplit(array) {
                 return array ? array.join(', ') : 'Team'
             },
             sendMessage() {
-
+                console.log(this.messages)
             }
         }
     }
@@ -129,4 +127,22 @@
         textarea
             padding-right: 46px !important;
 
+    .message-item
+        position relative
+        padding 16px
+        box-sizing content-box
+        overflow hidden
+        .message-avatar
+            float left
+            display inline
+        .message-sender
+            margin-left 56px
+        .message-content
+            margin-top 2px
+            margin-left 56px
+            margin-right 56px
+        .message-timestamp
+            position absolute
+            right 16px
+            top 16px
 </style>
