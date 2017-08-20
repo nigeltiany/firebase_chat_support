@@ -45,6 +45,7 @@
 <script>
 
     import TextAreaAutoGrow from 'textarea-autogrow'
+    import Firebase from '../firebase'
 
     export default {
         name: 'chat-im',
@@ -69,7 +70,14 @@
                 return array ? array.join(', ') : 'Team'
             },
             sendMessage() {
-                console.log(this.messages)
+                if(this.userMessage === "" || this.messages.length === 0){
+                   return
+                }
+                Firebase.sendMessageReply({
+                    conversation_id: this.messages[0].conversation_id,
+                    message: this.userMessage
+                })
+                this.userMessage = ""
             }
         }
     }
