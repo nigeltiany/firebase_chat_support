@@ -54,7 +54,7 @@
 <script>
 
     import firebase from '../firebase'
-    import _unionBy from 'lodash.unionby'
+    import _unionBy from 'lodash.uniqby'
     import chatIm from '../components/chat-im.vue'
     import ChatIm from "./chat-im";
 
@@ -80,7 +80,7 @@
                         uid: user.uid
                     });
 
-                    firebase.onNewMessage((message) => {
+                    firebase.subscribeToMessages((message) => {
                         if (this.messages[message.conversation_id]) {
                             this.messages[message.conversation_id].push(message)
                         }
