@@ -112,6 +112,7 @@
         height: calc(100% - 48px);
         margin-right -17px
         overflow-y: scroll;
+        padding-bottom 72px
         width unset
         min-height: 176px;
         li
