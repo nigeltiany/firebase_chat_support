@@ -18,7 +18,6 @@ export default new class firebase {
 
         this.database = createfireBaseDB()
         this.auth = this.firebase.auth()
-        this.conversation_ids = []
     }
 
     static userIsAuthenticated() {
@@ -44,16 +43,17 @@ export default new class firebase {
         });
     }
 
-    onNewMessage(callback) {
-        this.database.ref('messages/'+ this.user().uid).on('value', (userMessages) => {
-            let messages = userMessages.val()
-            if(messages) {
-                Object.keys(messages).map((message) => {
-                    if(messages[message].conversation_id) {
-                        callback(messages[message])
-                        this.conversation_ids.push(messages[message].conversation_id)
-                    }
-                })
+    subscribeToMessages(callback) {
+
+        this.database.ref('messages/'+ this.user().uid).on('child_added', (newMessage) => {
+            if(newMessage.val().conversation_id) {
+                callback(Object.assign({}, { id: newMessage.key }, newMessage.val()))
+            }
+        })
+
+        this.database.ref('messages/'+ this.user().uid).on('child_changed', (updatedMessage) => {
+            if(updatedMessage.val().conversation_id) {
+                callback(Object.assign({}, { id: updatedMessage.key }, updatedMessage.val()))
             }
         })
     }
