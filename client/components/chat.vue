@@ -162,11 +162,10 @@
         overflow-y: scroll;
         width unset
         min-height: 176px;
+        padding-bottom 72px
         li
             width 100%
             max-width 767px
-        li:last-of-type
-            padding-bottom: 60px
         hr.divider:last-of-type
             margin-top: -60px
     .compose-btn
