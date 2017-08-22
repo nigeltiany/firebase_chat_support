@@ -21,8 +21,8 @@ module.exports = functions.database.ref('/users/{userID}').onCreate(event => {
                 return agent.available === true && agent.online === true // && agent.activeInRole === true
             })
 
-            admin.database().ref('users/' + available_agent.uid + '/displayName').once("value", function(agent) {
-                let agentName = agent.val()
+            admin.database().ref('users/' + available_agent.uid).once("value", function(agent) {
+                let agentName = agent.val().displayName || 'Team'
                 let conversation_uid = generate_uid()
 
                 return admin.database().ref('messages/' + event.params.userID).push().set({
@@ -46,7 +46,9 @@ module.exports = functions.database.ref('/users/{userID}').onCreate(event => {
                     // Then update conversations participants relationship
                     ).then(() => {
                         return admin.database().ref('conversations/').child(conversation_uid).set({
-                            members: [event.params.userID, available_agent.uid]
+                            // One to one index mapping between a users name in the members array and their id in the members_uids array
+                            members: ['You', available_agent.displayName || 'Team'],
+                            member_uids: [event.params.userID, available_agent.uid]
                         })
                     })
                 })
