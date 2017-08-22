@@ -44,7 +44,6 @@ module.exports = functions.database.ref('/messages/{User_ID}/{Message_ID}').onCr
                 // A message reply
                 else {
                     return admin.database().ref('/conversations/' + event.data.val().conversation_id).once('value', (conversation) => {
-                        console.log(conversation.val().member_uids)
                         conversation.val().member_uids.map((recipient_id) => {
                             // User already has a copy of the message they sent
                             if(recipient_id === event.params.User_ID){
