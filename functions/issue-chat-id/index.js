@@ -55,7 +55,6 @@ module.exports = functions.database.ref('/messages/{User_ID}/{Message_ID}').onCr
                                     event.data.val(),
                                     {
                                         deliveredAt: Date.now(),
-                                        sender: event.params.User_ID
                                     },
                                     //__response MUST be set to true to avoid recursion
                                     {
