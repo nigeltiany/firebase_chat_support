@@ -8,6 +8,14 @@
         ".write": "auth != null && auth.uid == $uid"
       }
     },
+    "conversations":{
+      "$guid": {
+        ".read": "auth != null && root.child('conversations').child($guid).hasChild(auth.uid)",
+        "members": {
+          ".write": "auth != null && root.child('customer-support-agents').hasChild(auth.uid)"
+        }
+      }
+    },
     "messages": {
       "$uid": {
         "$messageid": {
