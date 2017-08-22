@@ -1,6 +1,7 @@
 <template>
     <v-dialog v-model="dialog" persistent hide-overlay :fullscreen="fullscreen">
-        <v-btn slot="activator" class="blue darken-2" fixed bottom right hover dark fab v-badge="{ value: messageCount, overlap: true, left: true }">
+        <v-btn slot="activator" class="blue darken-2" fixed bottom right hover dark fab
+            v-badge="{ visible: messageCount !== 0, value: messageCount, overlap: true, left: true }">
             <v-icon>chat</v-icon>
             <v-icon>close</v-icon>
         </v-btn>
