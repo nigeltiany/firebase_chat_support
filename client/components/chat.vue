@@ -23,17 +23,17 @@
             </v-toolbar>
             <div id="chat-content-container">
                 <v-list id="chat-list" three-line :class="{ space_top: fullscreen }" v-if="viewAllMessages">
-                    <template v-for="sender in userMessages()">
-                        <v-list-tile avatar v-bind:key="sender" @click.native="viewSenderMessages(sender)">
+                    <template v-for="conversation in userMessages()">
+                        <v-list-tile avatar v-bind:key="conversation" @click.native="viewSenderMessages(conversation)">
                             <v-list-tile-avatar>
-                                <img v-bind:src="lastMessageBySender(sender).avatar"/>
+                                <img v-bind:src="lastMessageBySender(conversation).avatar"/>
                             </v-list-tile-avatar>
                             <v-list-tile-content>
                                 <v-list-tile-title>
-                                    {{ lastMessageBySender(sender).title}} <span v-if="lastMessageBySender(sender).replies_meta" class="grey--text text--lighten-1">{{ lastMessageBySender(sender).replies_meta }}</span>
+                                    {{ lastMessageBySender(conversation).title}} <span v-if="lastMessageBySender(conversation).replies_meta" class="grey--text text--lighten-1">{{ lastMessageBySender(conversation).replies_meta }}</span>
                                 </v-list-tile-title>
                                 <v-list-tile-sub-title>
-                                    <span class='grey--text text--darken-2'>{{ commaSplit(lastMessageBySender(sender).participants) }} </span> — {{ lastMessageBySender(sender).message }}
+                                    <span class='grey--text text--darken-2'>{{ commaSplit(lastMessageBySender(conversation).participants) }} </span> — {{ lastMessageBySender(conversation).message }}
                                 </v-list-tile-sub-title>
                             </v-list-tile-content>
                         </v-list-tile>
@@ -54,7 +54,7 @@
 <script>
 
     import firebase from '../firebase'
-    import _unionBy from 'lodash.uniqby'
+    import _uniqueBy from 'lodash.uniqby'
     import chatIm from '../components/chat-im.vue'
     import ChatIm from "./chat-im";
 
@@ -81,14 +81,23 @@
                     });
 
                     firebase.subscribeToMessages((message) => {
+                        // For new messages in an existing conversation
                         if (this.messages[message.conversation_id]) {
+                            //this.messages[message.conversation_id][message.id] = message
                             this.messages[message.conversation_id].push(message)
+                            this.messages[message.conversation_id] = _uniqueBy(this.messages[message.conversation_id],'id')
                         }
+                        // For new messages in a new conversation
                         else {
                             this.messages[message.conversation_id] = []
                             this.messages[message.conversation_id].push(message)
                         }
-                        this.messageCount += 1
+
+                        if(!message.read) {
+                            this.messageCount += 1
+                        }else if(message.read && this.messages[message.conversation_id].find((element) => { return element.id === message.id })){
+                            this.messageCount > 0 ? this.messageCount -=1 : this.messageCount = 0
+                        }
                     })
                 }
             })
@@ -106,6 +115,8 @@
             viewSenderMessages(sender) {
                 this.senderMessages = this.messages[sender]
                 this.viewAllMessages = false
+                // Mark messages in conversation as read
+                firebase.markMessagesInConversationAsRead(sender)
             }
         }
     }
