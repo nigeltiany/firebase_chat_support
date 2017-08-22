@@ -10,9 +10,12 @@
     },
     "conversations":{
       "$guid": {
-        ".read": "auth != null && root.child('conversations').child($guid).child('members').hasChild(auth.uid)",
+        ".write": false,
         "members": {
-          ".write": "auth != null && root.child('customer-support-agents').hasChild(auth.uid)"
+          ".read": "auth != null && root.child('conversations').child($guid).child('members').hasChild(auth.uid)"
+        },
+        "member_uids": {
+          ".read": false
         }
       }
     },
