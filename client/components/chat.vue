@@ -180,7 +180,7 @@
             width 100%
             max-width 767px
         hr.divider:last-of-type
-            margin-top: -60px
+            display none
     .compose-btn
         position: absolute;
         left: 0;
