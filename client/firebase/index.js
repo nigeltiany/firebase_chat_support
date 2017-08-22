@@ -68,9 +68,10 @@ export default new class firebase {
     markMessagesInConversationAsRead(conversation_id) {
         this.database.ref('messages/' + this.user().uid).orderByChild('conversation_id').equalTo(conversation_id)
             .once("value",(conversationMessages) => {
-                console.log(conversationMessages.val())
                 conversationMessages.forEach((message) => {
-                    this.database.ref('messages/' + this.user().uid + "/" + message.key).update({ read: true })
+                    if(message.val().__response || message.val().auto){
+                        this.database.ref('messages/' + this.user().uid + "/" + message.key).update({ read: true })
+                    }
                 })
             })
     }
