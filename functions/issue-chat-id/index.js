@@ -55,6 +55,7 @@ module.exports = functions.database.ref('/messages/{User_ID}/{Message_ID}').onCr
                                     event.data.val(),
                                     {
                                         deliveredAt: Date.now(),
+                                        participants: conversation.val().participants
                                     },
                                     //__response MUST be set to true to avoid recursion
                                     {
