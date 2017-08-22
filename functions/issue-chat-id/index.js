@@ -22,7 +22,7 @@ module.exports = functions.database.ref('/messages/{User_ID}/{Message_ID}').onCr
     }
     else {
         return admin.database().ref('/messages/' + event.params.User_ID + '/' + event.params.Message_ID)
-            .update({ sentAt: Date.now() }).then(() => {
+            .update({ sentAt: Date.now(), delivered: false }).then(() => {
 
                 // New Message
                 if (!event.data.hasChild('conversation_id')) {
@@ -43,7 +43,7 @@ module.exports = functions.database.ref('/messages/{User_ID}/{Message_ID}').onCr
                 }
                 // A message reply
                 else {
-                    admin.database().ref('/conversations/' + event.data.val().conversation_id).once('value', (conversation) => {
+                    return admin.database().ref('/conversations/' + event.data.val().conversation_id).once('value', (conversation) => {
                         console.log(conversation.val().member_uids)
                         conversation.val().member_uids.map((recipient_id) => {
                             // User already has a copy of the message they sent
@@ -65,6 +65,10 @@ module.exports = functions.database.ref('/messages/{User_ID}/{Message_ID}').onCr
                                 )
                             )
                         })
+                    }).then(() => {
+                        // Update delivered status
+                        return admin.database().ref('/messages/' + event.params.User_ID + '/' + event.params.Message_ID)
+                            .update({ delivered: true, deliveredAt: Date.now() })
                     })
                 }
 
