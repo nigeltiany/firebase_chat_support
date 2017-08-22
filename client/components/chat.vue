@@ -95,7 +95,7 @@
                         }
 
                         // If the message is a response, that is, a message not by self/authenticated user and is not read
-                        if(!message.read && message.__response) {
+                        if(!message.read && (message.__response || message.auto)) {
                             this.messageCount += 1
                         }else if(message.read && this.messages[message.conversation_id].find((element) => { return element.id === message.id })){
                             this.messageCount > 0 ? this.messageCount -=1 : this.messageCount = 0
