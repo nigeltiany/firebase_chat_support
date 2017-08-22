@@ -8,9 +8,10 @@ const _sortBy = require('lodash.sortby'); const _isEqual = require('lodash.isequ
 
 module.exports = functions.database.ref('/users/{userID}').onCreate(event => {
 
-    admin.database().ref('customer-support-agents')
+    return admin.database().ref('customer-support-agents')
         .orderByChild('lastClientAt')
-        .once("value", function (snapshot) {
+        .once("value")
+        .then((snapshot) => {
 
             let agentsByLongestWaiting = []
             snapshot.forEach((agent) => { agentsByLongestWaiting.push(Object.assign({ uid: agent.key }, agent.val())) })
@@ -21,8 +22,8 @@ module.exports = functions.database.ref('/users/{userID}').onCreate(event => {
                 return agent.available === true && agent.online === true // && agent.activeInRole === true
             })
 
-            admin.database().ref('users/' + available_agent.uid).once("value", function(agent) {
-                let agentName = agent.val().displayName || 'Team'
+            return admin.database().ref('users/' + available_agent.uid).once("value").then((agent) => {
+                let agentName = (agent.val() && agent.val().displayName) || 'Team'
                 let conversation_uid = generate_uid()
 
                 return admin.database().ref('messages/' + event.params.userID).push().set({
@@ -43,7 +44,7 @@ module.exports = functions.database.ref('/users/{userID}').onCreate(event => {
                             lastClientAt: thisMoment,
                             updatedAt: thisMoment
                         })
-                    // Then update conversations participants relationship
+                        // Then update conversations participants relationship
                     ).then(() => {
                         return admin.database().ref('conversations/').child(conversation_uid).set({
                             // One to one index mapping between a users name in the members array and their id in the members_uids array
@@ -51,8 +52,9 @@ module.exports = functions.database.ref('/users/{userID}').onCreate(event => {
                             member_uids: [event.params.userID, available_agent.uid]
                         })
                     })
+
                 })
             })
 
-    })
+        })
 })
