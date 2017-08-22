@@ -20,6 +20,7 @@
     "messages": {
       "$uid": {
         ".read": "auth != null && auth.uid == $uid",
+        ".write": "auth != null && auth.uid == $uid",
         "$messageid": {
           "title": {
             ".read": "auth != null && auth.uid == $uid",
@@ -28,7 +29,7 @@
           "sender": {
             ".read": "auth != null && auth.uid == $uid",
             ".write": "auth != null && auth.uid == $uid",
-            ".validate": "(newData.val() === auth.displayName)"
+            ".validate": "(newData.val() === auth.displayName) || (auth.provider === 'anonymous' && newData.val() === 'You')"
           },
           "message": {
             ".read": "auth != null && auth.uid == $uid",
