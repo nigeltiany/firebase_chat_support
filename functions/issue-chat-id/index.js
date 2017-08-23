@@ -47,7 +47,7 @@ module.exports = functions.database.ref('/messages/{User_ID}/{Message_ID}').onCr
                         conversation.val().member_uids.map((recipient_id) => {
                             // User already has a copy of the message they sent
                             if(recipient_id === event.params.User_ID){
-                                return
+                                return admin.database().ref('messages/' + recipient_id).update({ participants: conversation.val().members })
                             }
                             // Write the reply to each recipient.
                             return admin.database().ref('messages/' + recipient_id).push().set(
@@ -55,7 +55,7 @@ module.exports = functions.database.ref('/messages/{User_ID}/{Message_ID}').onCr
                                     event.data.val(),
                                     {
                                         deliveredAt: Date.now(),
-                                        participants: conversation.val().participants
+                                        participants: conversation.val().members
                                     },
                                     //__response MUST be set to true to avoid recursion
                                     {
