@@ -31,7 +31,7 @@
                             </v-list-tile-avatar>
                             <v-list-tile-content>
                                 <v-list-tile-title>
-                                    {{ lastMessageBySender(conversation).title}} <span v-if="lastMessageBySender(conversation).replies_meta" class="grey--text text--lighten-1">{{ lastMessageBySender(conversation).replies_meta }}</span>
+                                    {{ lastMessageBySender(conversation).title}} <span v-if="unReadMessagesInConversation(conversation)" class="grey--text text--lighten-1">{{ lastMessageBySender(conversation).replies_meta }}</span>
                                 </v-list-tile-title>
                                 <v-list-tile-sub-title>
                                     <span class='grey--text text--darken-2'>{{ commaSplit(lastMessageBySender(conversation).participants) }} </span> — {{ lastMessageBySender(conversation).message }}
@@ -113,14 +113,23 @@
             userMessages() {
                 return Object.keys(this.messages)
             },
-            lastMessageBySender(sender) {
-                return this.messages[sender][this.messages[sender].length-1]
+            lastMessageBySender(conversation) {
+                return this.messages[conversation][this.messages[conversation].length-1]
             },
-            viewSenderMessages(sender) {
-                this.senderMessages = this.messages[sender]
+            unReadMessagesInConversation(conversation){
+                let unread = 0
+                this.messages[conversation].map((message) => {
+                    if(!message.read && (message.__response || message.auto)) {
+                        unread += 1
+                    }
+                })
+                return unread
+            },
+            viewSenderMessages(conversation) {
+                this.senderMessages = this.messages[conversation]
                 this.viewAllMessages = false
                 // Mark messages in conversation as read
-                firebase.markMessagesInConversationAsRead(sender)
+                firebase.markMessagesInConversationAsRead(conversation)
             }
         }
     }
