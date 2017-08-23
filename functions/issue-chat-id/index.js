@@ -47,7 +47,9 @@ module.exports = functions.database.ref('/messages/{User_ID}/{Message_ID}').onCr
                         conversation.val().member_uids.map((recipient_id) => {
                             // User already has a copy of the message they sent
                             if(recipient_id === event.params.User_ID){
-                                return admin.database().ref('messages/' + recipient_id).update({ participants: conversation.val().members })
+                                // updates only
+                                return admin.database().ref('messages/' + event.params.User_ID + '/' + event.params.Message_ID)
+                                    .update({ participants: conversation.val().members })
                             }
                             // Write the reply to each recipient.
                             return admin.database().ref('messages/' + recipient_id).push().set(
