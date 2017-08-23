@@ -48,7 +48,7 @@ module.exports = functions.database.ref('/users/{userID}').onCreate(event => {
                     ).then(() => {
                         return admin.database().ref('conversations/').child(conversation_uid).set({
                             // One to one index mapping between a users name in the members array and their id in the members_uids array
-                            members: ['You', available_agent.displayName || 'Team'],
+                            members: [event.data.displayName || 'Anonymous', agentName],
                             member_uids: [event.params.userID, available_agent.uid]
                         })
                     })
