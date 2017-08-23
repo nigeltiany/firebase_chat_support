@@ -75,7 +75,7 @@
                 }
                 Firebase.sendMessageReply({
                     conversation_id: this.messages[0].conversation_id,
-                    sender: Firebase.user().displayName || 'You',
+                    sender: Firebase.user().displayName || 'Anonymous',
                     message: this.userMessage
                 })
                 this.userMessage = ""
