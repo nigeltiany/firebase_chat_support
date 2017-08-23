@@ -108,7 +108,7 @@
         },
         methods: {
             commaSplit(array) {
-                return array ? array.join(', ') : 'Team'
+                return array ? array.splice(firebase.user().displayName ? array.indexOf(firebase.user().displayName) :array.indexOf('Anonymous'), 1).join(', ') : 'Team'
             },
             userMessages() {
                 return Object.keys(this.messages)
