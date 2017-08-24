@@ -3,20 +3,7 @@
         <v-list id="chat-messages" :class="{ space_top: fullscreen }" three-line>
 
             <template v-for="(message, index) in messages">
-                <div class="message-item" avatar v-bind:key="index">
-                    <v-list-tile-avatar class="message-avatar">
-                        <img v-bind:src="message.avatar"/>
-                    </v-list-tile-avatar>
-                    <div class="message-sender">
-                        {{ message.sender }}
-                    </div>
-                    <div class="message-content">
-                        {{ message.message }}
-                    </div>
-                    <div class="message-timestamp caption">
-                        {{ timeAgo(message.deliveredAt) }}
-                    </div>
-                </div>
+                <message-item :message="message" v-bind:key="index"></message-item>
             </template>
 
             <div style="position: absolute; bottom: 0; max-width: 768px; width: 100%; padding-top: 8px; background: #fff;">
@@ -46,10 +33,13 @@
 
     import TextAreaAutoGrow from 'textarea-autogrow'
     import Firebase from '../firebase'
-    import moment from 'moment'
+    import messageItem from './message-item.vue'
 
     export default {
         name: 'chat-im',
+        components: {
+            messageItem
+        },
         props: {
             messages: {
                 type: Object
@@ -69,12 +59,6 @@
         methods: {
             commaSplit(array) {
                 return array ? array.join(', ') : 'Team'
-            },
-            timeAgo(time){
-                if(time){
-                    return moment(time).fromNow()
-                }
-                return
             },
             getCurrentConversation(){
                 let keys = Object.keys(this.messages)
@@ -148,23 +132,4 @@
     .with_small_button_space > .input-group__input
         textarea
             padding-right: 46px !important;
-
-    .message-item
-        position relative
-        padding 16px
-        box-sizing content-box
-        overflow hidden
-        .message-avatar
-            float left
-            display inline
-        .message-sender
-            margin-left 56px
-        .message-content
-            margin-top 2px
-            margin-left 56px
-            margin-right 56px
-        .message-timestamp
-            position absolute
-            right 16px
-            top 16px
 </style>
