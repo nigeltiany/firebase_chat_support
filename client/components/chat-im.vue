@@ -14,7 +14,7 @@
                         {{ message.message }}
                     </div>
                     <div class="message-timestamp caption">
-                        9:50am
+                        {{ timeAgo(message.deliveredAt) }}
                     </div>
                 </div>
             </template>
@@ -46,6 +46,7 @@
 
     import TextAreaAutoGrow from 'textarea-autogrow'
     import Firebase from '../firebase'
+    import moment from 'moment'
 
     export default {
         name: 'chat-im',
@@ -68,6 +69,12 @@
         methods: {
             commaSplit(array) {
                 return array ? array.join(', ') : 'Team'
+            },
+            timeAgo(time){
+                if(time){
+                    return moment(time).fromNow()
+                }
+                return
             },
             getCurrentConversation(){
                 let keys = Object.keys(this.messages)
