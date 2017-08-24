@@ -31,8 +31,10 @@ module.exports = functions.database.ref('/users/{userID}').onCreate(event => {
                     title: 'Welcome to Lawn Care',
                     sender: agentName,
                     conversation_id: conversation_uid,
-                    participants: [agentName,],
-                    message: "Welcome to lawn care. Let us know if you have any questions"
+                    participants: [event.data.displayName || 'Anonymous', agentName],
+                    message: "Welcome to lawn care. Let us know if you have any questions",
+                    delivered: true,
+                    deliveredAt: Date.now()
                 }).then(() => {
                     let thisMoment = Date.now()
 
