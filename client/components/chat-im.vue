@@ -2,7 +2,7 @@
 
         <v-list id="chat-messages" :class="{ space_top: fullscreen }" three-line>
 
-            <template v-for="(message, index) in messages" v-if="messages.length">
+            <template v-for="(message, index) in messages">
                 <div class="message-item" avatar v-bind:key="index">
                     <v-list-tile-avatar class="message-avatar">
                         <img v-bind:src="message.avatar"/>
@@ -51,7 +51,7 @@
         name: 'chat-im',
         props: {
             messages: {
-                type: Array
+                type: Object
             },
             fullscreen: {
                 type: Boolean
@@ -69,12 +69,17 @@
             commaSplit(array) {
                 return array ? array.join(', ') : 'Team'
             },
+            getCurrentConversation(){
+                let keys = Object.keys(this.messages)
+                let lastMessageKey = keys[keys.length -1]
+                return this.messages[lastMessageKey].conversation_id
+            },
             sendMessage() {
                 if(this.userMessage === "" || this.messages.length === 0){
                    return
                 }
                 Firebase.sendMessageReply({
-                    conversation_id: this.messages[0].conversation_id,
+                    conversation_id: this.getCurrentConversation(),
                     sender: Firebase.user().displayName || 'Anonymous',
                     message: this.userMessage
                 })

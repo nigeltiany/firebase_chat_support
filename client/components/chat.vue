@@ -31,10 +31,10 @@
                             </v-list-tile-avatar>
                             <v-list-tile-content>
                                 <v-list-tile-title>
-                                    {{ lastMessageBySender(conversation).title}} <span v-if="unReadMessagesInConversation(conversation)" class="grey--text text--lighten-1">{{ lastMessageBySender(conversation).replies_meta }}</span>
+                                    {{ lastMessageBySender(conversation).title }}<!-- <span v-if="unreadMessagesByConversation" class="grey&#45;&#45;text text&#45;&#45;lighten-1">{{ unreadMessagesByConversation[conversation].length }}</span>-->
                                 </v-list-tile-title>
                                 <v-list-tile-sub-title>
-                                    <span class='grey--text text--darken-2'>{{ commaSplit(lastMessageBySender(conversation).participants) }} </span> — {{ lastMessageBySender(conversation).message }}
+                                    <span class='grey--text text--darken-2'>{{ lastMessageBySender(conversation).participants }} </span> — {{ lastMessageBySender(conversation).message }}
                                 </v-list-tile-sub-title>
                             </v-list-tile-content>
                         </v-list-tile>
@@ -57,7 +57,8 @@
     import firebase from '../firebase'
     import _uniqueBy from 'lodash.uniqby'
     import chatIm from '../components/chat-im.vue'
-    import ChatIm from "./chat-im";
+    import ChatIm from "./chat-im"
+    import Vue from 'vue'
 
     export default {
         components: {ChatIm},
@@ -65,7 +66,7 @@
             dialog: false,
             messageCount: 0,
             viewAllMessages: true,
-            senderMessages: [],
+            senderMessages: {},
             messages: {}
         }),
         props: {
@@ -76,30 +77,26 @@
         created() {
             firebase.signInAnonymously()
             firebase.authStateChanged((user, database) => {
-                if (user) {
+                if (!user) {
+                } else {
                     database.ref('users/' + user.uid).set({
                         uid: user.uid
                     });
 
                     firebase.subscribeToMessages((message) => {
-                        // For new messages in an existing conversation
-                        if (this.messages[message.conversation_id]) {
-                            //this.messages[message.conversation_id][message.id] = message
-                            this.messages[message.conversation_id].push(message)
-                            this.messages[message.conversation_id] = _uniqueBy(this.messages[message.conversation_id],'id')
+                        if(!this.messages[message.conversation_id]){
+                            this.messages[message.conversation_id] = {}
+                            this.messages[message.conversation_id][message.id] = message
                         }
-                        // For new messages in a new conversation
-                        else {
-                            this.messages[message.conversation_id] = []
-                            this.messages[message.conversation_id].push(message)
+                        else if(this.messages[message.conversation_id]){
+                            this.messages[message.conversation_id][message.id] = message
                         }
 
-                        // If the message is a response, that is, a message not by self/authenticated user and is not read
-                        if(!message.read && (message.__response || message.auto)) {
+                        if (!message.read && (message.__response || message.auto)) {
                             this.messageCount += 1
-                        }else if(message.read && this.messages[message.conversation_id].find((element) => { return element.id === message.id })){
-                            if(this.messageCount > 0) {
-                                this.messageCount -=1
+                        } else if (message.read && this.messages[message.conversation_id][message.id]) {
+                            if (this.messageCount > 0) {
+                                this.messageCount -= 1
                             }
                         }
                     })
@@ -107,23 +104,25 @@
             })
         },
         methods: {
-            commaSplit(array) {
-                return array ? array.splice(firebase.user().displayName ? array.indexOf(firebase.user().displayName) :array.indexOf('Anonymous'), 1).join(', ') : 'Team'
+            conversationMembers(array) {
+                if(array){
+                    if(firebase.user().displayName) {
+                        array.splice(array.indexOf(firebase.user().displayName), 0).join(', ')
+                    }
+                    else {
+                        array.splice(array.indexOf('Anonymous'), 0).join(', ')
+                    }
+                }
             },
             userMessages() {
                 return Object.keys(this.messages)
             },
             lastMessageBySender(conversation) {
-                return this.messages[conversation][this.messages[conversation].length-1]
-            },
-            unReadMessagesInConversation(conversation){
-                let unread = 0
-                this.messages[conversation].map((message) => {
-                    if(!message.read && (message.__response || message.auto)) {
-                        unread += 1
-                    }
+                let keys = Object.keys(this.messages[conversation])
+                let lastMessageKey = keys[keys.length -1]
+                return Object.assign(this.messages[conversation][lastMessageKey],{
+                    participants: this.conversationMembers(this.messages[conversation][lastMessageKey]['participants'])
                 })
-                return unread
             },
             viewSenderMessages(conversation) {
                 this.senderMessages = this.messages[conversation]
