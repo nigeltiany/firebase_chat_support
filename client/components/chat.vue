@@ -89,7 +89,7 @@
                             this.messages[message.conversation_id][message.id] = message
                         }
                         else if(this.messages[message.conversation_id]){
-                            this.messages[message.conversation_id][message.id] = message
+                            Vue.set(this.messages[message.conversation_id], message.id, message)
                         }
 
                         if (!message.read && (message.__response || message.auto)) {
