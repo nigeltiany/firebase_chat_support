@@ -52,9 +52,14 @@ module.exports = functions.database.ref('/users/{userID}').onCreate(event => {
                             admins: [agent.key],
                             closed: false,
                             createdAt: Date.now(),
-                            // One to one index mapping between a users name in the members array and their id in the members_uids array
-                            members: [event.data.displayName || 'Anonymous', agentName],
-                            member_uids: [event.params.userID, available_agent.uid],
+                            members: {
+                                [event.params.userID]: {
+                                    displayName : event.data.displayName || 'Anonymous'
+                                },
+                                [available_agent.uid]: {
+                                    displayName: agentName
+                                }
+                            },
                             subject: 'Welcome to Lawn Care',
                             updatedAt: Date.now()
                         })
