@@ -48,6 +48,7 @@
       "$uid": {
         ".read": "auth != null && auth.uid == $uid",
         ".write": "auth != null && auth.uid == $uid",
+        ".indexOn": "conversation_id",
         "$messageid": {
           "__response": {
             ".read": false,
