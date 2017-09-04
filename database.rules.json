@@ -4,6 +4,7 @@
       "$uid": {
         ".read": "auth != null && auth.uid == $uid",
         ".write": "auth != null && auth.uid == $uid",
+        ".indexOn": "displayName",
         "displayName": {
           ".read": false,
           ".write": "auth != null && auth.uid == $uid",
@@ -48,41 +49,12 @@
         ".read": "auth != null && auth.uid == $uid",
         ".write": "auth != null && auth.uid == $uid",
         "$messageid": {
-          "title": {
-            ".read": "auth != null && auth.uid == $uid",
-            ".write": "auth != null && auth.uid == $uid"
-          },
-          "sender": {
-            ".read": "auth != null && auth.uid == $uid",
-            ".write": "auth != null && auth.uid == $uid",
-            ".validate": "(newData.val() === auth.displayName) || (auth.provider === 'anonymous' && newData.val() === 'Anonymous')"
-          },
-          "message": {
-            ".read": "auth != null && auth.uid == $uid",
-            ".write": "auth != null && auth.uid == $uid"
-          },
-          "auto": {
-            ".read": false,
-            ".write": false
-          },
           "__response": {
             ".read": false,
             ".write": false
           },
-          "conversation_id": {
-            ".read": "auth != null && auth.uid == $uid",
-            ".write": false
-          },
-          "participants": {
-            ".read": "auth != null && auth.uid == $uid",
-            ".write": "auth != null && root.child('customer-support-agents').hasChild(auth.uid)"
-          },
-          "recipients": {
+          "auto": {
             ".read": false,
-            ".write": "auth != null && root.child('customer-support-agents').hasChild(auth.uid)"
-          },
-          "sentAt": {
-            ".read": "auth != null && auth.uid == $uid",
             ".write": false
           },
           "deliveredAt": {
@@ -93,14 +65,47 @@
             ".read": "auth != null && auth.uid == $uid",
             ".write": false
           },
-          "sent": {
+          "conversation_id": {
             ".read": "auth != null && auth.uid == $uid",
             ".write": false
+          },
+          "message": {
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": "auth != null && auth.uid == $uid"
+          },
+          "participants": {
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": "auth != null && root.child('customer-support-agents').hasChild(auth.uid)"
           },
           "read": {
             ".read": "auth != null && auth.uid == $uid",
             ".write": "auth != null && auth.uid == $uid",
             ".validate": "(newData.val() === true) || (newData.val() === false)"
+          },
+          "recipients": {
+            ".read": false,
+            ".write": "auth != null && root.child('customer-support-agents').hasChild(auth.uid)"
+          },
+          "sentAt": {
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": false
+          },
+          "to":{
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": "auth != null && auth.uid == $uid"
+          },
+          "title": {
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": "auth != null && auth.uid == $uid"
+          },
+          "sender": {
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": "auth != null && auth.uid == $uid",
+            ".validate": "(newData.val() === auth.displayName) || (auth.provider === 'anonymous' && newData.val() === 'Anonymous')"
+          },
+          "sent": {
+            ".read": "auth != null && auth.uid == $uid",
+            ".write": false
           }
         }
       }
