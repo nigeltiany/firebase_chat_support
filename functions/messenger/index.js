@@ -50,8 +50,15 @@ module.exports = functions.database.ref('/messages/{User_ID}/{Message_ID}').onCr
                                     updatedAt: Date.now()
                                 }).then(() => {
                                     if(queued) {
-                                        return admin.database().ref('help_queue/').push()
-                                            .set(Object.assign({}, event.data.val(), {createdAt: Date.now()}))
+                                        return admin.database().ref('help_queue/').push().set(
+                                            Object.assign({},
+                                                event.data.val(),
+                                                {
+                                                    conversation_id: conversation_id,
+                                                    createdAt: Date.now()
+                                                }
+                                            )
+                                        )
                                     }
 
                                     sendMessage(conversation_id, conversation, event, event.data.val().to)
