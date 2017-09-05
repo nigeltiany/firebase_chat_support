@@ -14,12 +14,12 @@
     },
     "conversations":{
       "$guid": {
-        ".read": "auth != null && root.child('conversations').child($guid).child('member_uids').hasChild(auth.uid)",
+        ".read": "auth != null && root.child('conversations').child($guid).child('members').hasChild(auth.uid)",
         ".write": "auth != null && root.child('conversations').child($guid).child('admins').hasChild(auth.uid)",
         "admins": {
           ".read": false,
           ".write": "auth != null && root.child('conversations').child($guid).child('admins').hasChild(auth.uid)",
-          ".validate": "root.child('conversations').child($guid).child('member_uids').hasChild(newData.val())"
+          ".validate": "root.child('conversations').child($guid).child('members').hasChild(newData.val())"
         },
         "closed": {
           ".read": false,
@@ -31,11 +31,11 @@
           ".write": false
         },
         "members": {
-          ".read": "auth != null && root.child('conversations').child($guid).child('member_uids').hasChild(auth.uid)",
+          ".read": "auth != null && root.child('conversations').child($guid).child('members').hasChild(auth.uid)",
           ".write": "auth != null && root.child('conversations').child($guid).child('admins').hasChild(auth.uid)"
         },
         "subject": {
-          ".read": "auth != null && root.child('conversations').child($guid).child('member_uids').hasChild(auth.uid)",
+          ".read": "auth != null && root.child('conversations').child($guid).child('members').hasChild(auth.uid)",
           ".write": "auth != null && root.child('conversations').child($guid).child('admins').hasChild(auth.uid)"
         },
         "updatedAt": {
