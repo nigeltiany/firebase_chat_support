@@ -111,6 +111,17 @@
         }
       }
     },
+    "user_conversations": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": false,
+        ".indexOn": "updatedAt",
+        "updatedAt": {
+          ".read": "auth != null && auth.uid == $uid",
+          ".write": false
+        }
+      }
+    },
     "customer-support-agents": {
       ".indexOn": "lastClientAt",
       "$agentid": {
