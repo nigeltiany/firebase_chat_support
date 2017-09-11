@@ -5,11 +5,12 @@ module.exports = functions.database.ref('messages/{User_ID}/{Message_ID}/convers
     return admin.database().ref('user_conversations')
         .child(event.params.User_ID)
         .child(event.data.val())
-        .child('messages').set({ [event.params.Message_ID]: true }).then(() => {
+        .child('messages').update({ [event.params.Message_ID]: true }).then(() => {
+            let now = Date.now()
             return admin.database().ref('user_conversations/' + event.params.User_ID + '/' + event.data.val())
                 .update({
-                    priority: 1 - Date.now(),
-                    updatedAt: Date.now()
+                    priority: 1 - now,
+                    updatedAt: now
                 })
         })
 })
