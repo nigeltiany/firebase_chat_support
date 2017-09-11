@@ -115,8 +115,12 @@
       "$uid": {
         ".read": "auth != null && auth.uid == $uid",
         ".write": false,
-        ".indexOn": "updatedAt",
+        ".indexOn": "priority",
         "updatedAt": {
+          ".read": "auth != null && auth.uid == $uid",
+          ".write": false
+        },
+        "priority": {
           ".read": "auth != null && auth.uid == $uid",
           ".write": false
         }
