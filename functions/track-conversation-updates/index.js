@@ -6,9 +6,13 @@ module.exports = functions.database.ref('messages/{User_ID}/{Message_ID}').onUpd
         return admin.database().ref('user_conversations')
             .child(event.params.User_ID)
             .child(event.data.val().conversation_id)
-            .update({
-                priority: 1 - Date.now(),
-                updatedAt: Date.now()
+            .child('messages').update({ [event.params.Message_ID]: true }).then(() => {
+                let now = Date.now()
+                return admin.database().ref('user_conversations/' + event.params.User_ID + '/' + event.data.val().conversation_id)
+                    .update({
+                        priority: 1 - now,
+                        updatedAt: now
+                    })
             })
     }
 })
