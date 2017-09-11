@@ -1,6 +1,7 @@
 // this is aliased in webpack config based on server/client build
 import { createFireBase, createfireBaseDB } from '_firebase'
 import { mapState } from 'vuex'
+import takeRight from 'lodash.takeright'
 
 export default new class firebase {
 
@@ -46,14 +47,32 @@ export default new class firebase {
     subscribeToMessages(callback) {
         const conversations = this.database.ref('user_conversations/' + this.user().uid).limitToLast(16).orderByChild('priority')
 
+        function lastNMessages(n=100, conversation){
+            return takeRight(Object.keys(conversation.val().messages) , n)
+        }
+
         conversations.on('child_added', (conversationSnapShot) => {
-            Object.keys(conversationSnapShot.val().messages).map((messageKey) => {
+            lastNMessages(100, conversationSnapShot).map((messageKey) => {
                 this.database.ref('messages/'+ this.user().uid + '/' + messageKey).once('value', (messageSnapShot) => {
-                    callback(messageSnapShot.val())
+                    callback(Object.assign({}, { id: messageSnapShot.key }, messageSnapShot.val()))
+
                 })
 
                 this.database.ref('messages/'+ this.user().uid + '/' + messageKey).on('child_changed', (messageSnapShot) => {
-                    callback(messageSnapShot.val())
+                    callback(Object.assign({}, { id: messageSnapShot.key }, messageSnapShot.val()))
+                })
+            })
+        })
+
+        conversations.on('child_changed', (conversationSnapShot) => {
+            lastNMessages(100, conversationSnapShot).map((messageKey) => {
+                this.database.ref('messages/'+ this.user().uid + '/' + messageKey).once('value', (messageSnapShot) => {
+                    callback(Object.assign({}, { id: messageSnapShot.key }, messageSnapShot.val()))
+
+                })
+
+                this.database.ref('messages/'+ this.user().uid + '/' + messageKey).on('child_changed', (messageSnapShot) => {
+                    callback(Object.assign({}, { id: messageSnapShot.key }, messageSnapShot.val()))
                 })
             })
         })
