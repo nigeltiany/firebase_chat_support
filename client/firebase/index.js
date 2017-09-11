@@ -44,17 +44,18 @@ export default new class firebase {
     }
 
     subscribeToMessages(callback) {
+        const conversations = this.database.ref('user_conversations/' + this.user().uid).limitToLast(16).orderByChild('priority')
 
-        this.database.ref('messages/'+ this.user().uid).on('child_added', (newMessage) => {
-            if(newMessage.val().conversation_id) {
-                callback(Object.assign({}, { id: newMessage.key }, newMessage.val()))
-            }
-        })
+        conversations.on('child_added', (conversationSnapShot) => {
+            Object.keys(conversationSnapShot.val().messages).map((messageKey) => {
+                this.database.ref('messages/'+ this.user().uid + '/' + messageKey).once('value', (messageSnapShot) => {
+                    callback(messageSnapShot.val())
+                })
 
-        this.database.ref('messages/'+ this.user().uid).on('child_changed', (updatedMessage) => {
-            if(updatedMessage.val().conversation_id) {
-                callback(Object.assign({}, { id: updatedMessage.key }, updatedMessage.val()))
-            }
+                this.database.ref('messages/'+ this.user().uid + '/' + messageKey).on('child_changed', (messageSnapShot) => {
+                    callback(messageSnapShot.val())
+                })
+            })
         })
     }
 
@@ -74,5 +75,12 @@ export default new class firebase {
                     }
                 })
             })
+    }
+
+    sendNewMessage(message){
+        if(!message.to){
+            return
+        }
+        this.database.ref('messages/'+ this.user().uid).push().set(message)
     }
 }
