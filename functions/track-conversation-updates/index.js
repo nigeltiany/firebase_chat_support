@@ -10,7 +10,7 @@ module.exports = functions.database.ref('messages/{User_ID}/{Message_ID}').onUpd
                 let now = Date.now()
                 return admin.database().ref('user_conversations/' + event.params.User_ID + '/' + event.data.val().conversation_id)
                     .update({
-                        priority: 1 - now,
+                        priority: 0 - now,
                         updatedAt: now
                     })
             })
