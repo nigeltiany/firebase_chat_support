@@ -66,14 +66,32 @@
                 return this.messages[lastMessageKey].conversation_id
             },
             sendMessage() {
-                if(this.userMessage === "" || this.messages.length === 0){
+                if(this.userMessage === ""){
                    return
                 }
                 Firebase.sendMessageReply({
                     conversation_id: this.getCurrentConversation(),
                     sender: Firebase.user().displayName || 'Anonymous',
                     message: this.userMessage
+                }, (optimisticKey) => {
+                    this.messages[optimisticKey] = {
+                        conversation_id: this.getCurrentConversation(),
+                        sender: Firebase.user().displayName || 'Anonymous',
+                        message: this.userMessage,
+                        delivered: true,
+                        deliveredAt: Date.now()
+                    }
                 })
+//                Firebase.sendNewMessage({
+//                    sender: Firebase.user().displayName || 'Anonymous',
+//                    message: this.userMessage,
+//                    subject: 'new message',
+//                    to: {
+//                        Jesse: {
+//                            displayName: 'test'
+//                        }
+//                    }
+//                })
                 this.userMessage = ""
             }
         }
