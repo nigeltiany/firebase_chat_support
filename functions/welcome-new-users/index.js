@@ -28,7 +28,7 @@ module.exports = functions.database.ref('/users/{userID}').onCreate(event => {
 
                 return admin.database().ref('messages/' + event.params.userID).push().set({
                     auto: true, // Used to ignore sending message to agent until recipient replies
-                    title: 'Welcome to Lawn Care',
+                    subject: 'Welcome to Lawn Care',
                     sender: agentName,
                     conversation_id: conversation_uid,
                     participants: [event.data.displayName || 'Anonymous', agentName],
