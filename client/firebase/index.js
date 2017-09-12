@@ -51,29 +51,31 @@ export default new class firebase {
             return takeRight(Object.keys(conversation.val().messages) , n)
         }
 
+        function loadMessage(messageKey) {
+            this.database.ref('messages/'+ this.user().uid + '/' + messageKey).once('value', (messageSnapShot) => {
+                if(!messageSnapShot.val().conversation_id){
+                    return
+                }
+                callback(Object.assign({}, { id: messageSnapShot.key }, messageSnapShot.val()))
+            })
+
+            this.database.ref('messages/'+ this.user().uid + '/' + messageKey).on('child_changed', (messageSnapShot) => {
+                if(!messageSnapShot.val().conversation_id){
+                    return
+                }
+                callback(Object.assign({}, { id: messageSnapShot.key }, messageSnapShot.val()))
+            })
+        }
+
         conversations.on('child_added', (conversationSnapShot) => {
             lastNMessages(100, conversationSnapShot).map((messageKey) => {
-                this.database.ref('messages/'+ this.user().uid + '/' + messageKey).once('value', (messageSnapShot) => {
-                    callback(Object.assign({}, { id: messageSnapShot.key }, messageSnapShot.val()))
-
-                })
-
-                this.database.ref('messages/'+ this.user().uid + '/' + messageKey).on('child_changed', (messageSnapShot) => {
-                    callback(Object.assign({}, { id: messageSnapShot.key }, messageSnapShot.val()))
-                })
+                loadMessage.call(this, messageKey)
             })
         })
 
         conversations.on('child_changed', (conversationSnapShot) => {
             lastNMessages(100, conversationSnapShot).map((messageKey) => {
-                this.database.ref('messages/'+ this.user().uid + '/' + messageKey).once('value', (messageSnapShot) => {
-                    callback(Object.assign({}, { id: messageSnapShot.key }, messageSnapShot.val()))
-
-                })
-
-                this.database.ref('messages/'+ this.user().uid + '/' + messageKey).on('child_changed', (messageSnapShot) => {
-                    callback(Object.assign({}, { id: messageSnapShot.key }, messageSnapShot.val()))
-                })
+                loadMessage.call(this, messageKey)
             })
         })
     }
