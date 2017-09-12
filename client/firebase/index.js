@@ -80,11 +80,14 @@ export default new class firebase {
         })
     }
 
-    sendMessageReply(message) {
+    sendMessageReply(message, callback) {
         if(!message.conversation_id){
             return
         }
-        this.database.ref('messages/'+ this.user().uid).push().set(message)
+        const ref =  this.database.ref('messages/'+ this.user().uid).push()
+        // pass message key for optimistic ui
+        callback(ref.key)
+        ref.set(message)
     }
 
     markMessagesInConversationAsRead(conversation_id) {
@@ -98,10 +101,13 @@ export default new class firebase {
             })
     }
 
-    sendNewMessage(message){
+    sendNewMessage(message, callback){
         if(!message.to){
             return
         }
-        this.database.ref('messages/'+ this.user().uid).push().set(message)
+        const ref = this.database.ref('messages/'+ this.user().uid).push()
+        // pass message key for optimistic ui
+        callback(ref.key)
+        ref.set(message)
     }
 }
