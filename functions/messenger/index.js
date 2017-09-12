@@ -61,7 +61,10 @@ module.exports = functions.database.ref('/messages/{User_ID}/{Message_ID}').onCr
                                         )
                                     }
 
-                                    sendMessage(conversation_id, conversation, event, event.data.val().to)
+                                    sendMessage(conversation_id, conversation, event, event.data.val().to).then(() => {
+                                        return admin.database().ref('/messages/' + event.params.User_ID + '/' + event.params.Message_ID)
+                                            .update({ deliveredAt: Date.now(), delivered: true })
+                                    })
                                 })
                             })
                         })
@@ -105,68 +108,13 @@ module.exports = functions.database.ref('/messages/{User_ID}/{Message_ID}').onCr
 function sendMessage(conversation_id, conversation, event, recipientList){
     switch (typeof recipientList){
         case 'object':
-            if(recipientList instanceof Set) {
-                recipientList.forEach((identifier) => {
-                    return admin.database().ref('users/' + identifier).once('value', (recipientSnapShot) => {
+            return new Promise((resolve,reject) => {
+                if(recipientList instanceof Set) {
+                    recipientList.forEach((identifier) => {
+                        return admin.database().ref('users/' + identifier).once('value', (recipientSnapShot) => {
 
-                        if(recipientSnapShot.val()){
-                            return conversation.child('members').update({
-                                [identifier]: {
-                                    displayName: recipientSnapShot.val().displayName || 'Anonymous',
-                                    role: 'member'
-                                }
-                            }).then(() => {
-                                return admin.database().ref('messages/' + identifier).push().set(
-                                    Object.assign({},
-                                        event.data.val(),
-                                        {
-                                            conversation_id: conversation_id,
-                                            deliveredAt: Date.now()
-                                        },
-                                        //__response MUST be set to true to avoid recursion
-                                        {
-                                            __response: true
-                                        }
-                                    )
-                                )
-                            })
-                        }
-                        else{
-                            return admin.database().ref('users').orderByChild('displayName').equalTo(identifier)
-                                .once('child_added', (recipientSnapShot) => {
-                                    return conversation.child('members')
-                                        .update({
-                                            [recipientSnapShot.key]: {
-                                                displayName: recipientSnapShot.val().displayName || 'Anonymous',
-                                                role: 'member'
-                                            }
-                                        }).then(() => {
-                                            return admin.database().ref('messages/' + recipientSnapShot.key).push().set(
-                                                Object.assign({},
-                                                    event.data.val(),
-                                                    {
-                                                        conversation_id: conversation_id,
-                                                        deliveredAt: Date.now()
-                                                    },
-                                                    //__response MUST be set to true to avoid recursion
-                                                    {
-                                                        __response: true
-                                                    }
-                                                )
-                                            )
-                                        })
-                                })
-                        }
-
-                    })
-                })
-            }
-            else if(recipientList instanceof Object){
-                Object.keys(recipientList).map((identifier) => {
-                    return admin.database().ref('users/' + identifier).once('value', (recipientSnapShot) => {
-                        if(recipientSnapShot.val()){
-                            return conversation.child('members')
-                                .update({
+                            if(recipientSnapShot.val()){
+                                return conversation.child('members').update({
                                     [identifier]: {
                                         displayName: recipientSnapShot.val().displayName || 'Anonymous',
                                         role: 'member'
@@ -184,36 +132,93 @@ function sendMessage(conversation_id, conversation, event, recipientList){
                                                 __response: true
                                             }
                                         )
-                                    )
+                                    ).then(resolve)
                                 })
-                        }
-                        else {
-                            return admin.database().ref().child('users').orderByChild('displayName').equalTo(identifier)
-                                .once('child_added', (recipientSnapShot) => {
-                                    return conversation.child('members')
-                                        .update({
-                                            [recipientSnapShot.key]: {
-                                                displayName: recipientSnapShot.val().displayName || 'Anonymous',
-                                                role: 'member'                                                                        }
-                                        }).then(() => {
-                                            return admin.database().ref('messages/' + recipientSnapShot.key).push().set(
-                                                Object.assign({},
-                                                    event.data.val(),
-                                                    {
-                                                        conversation_id: conversation_id,
-                                                        deliveredAt: Date.now()
-                                                    },
-                                                    //__response MUST be set to true to avoid recursion
-                                                    {
-                                                        __response: true
-                                                    }
-                                                )
-                                            )
-                                        })
-                                })
-                        }
+                            }
+                            else{
+                                return admin.database().ref('users').orderByChild('displayName').equalTo(identifier)
+                                    .once('child_added', (recipientSnapShot) => {
+                                        return conversation.child('members')
+                                            .update({
+                                                [recipientSnapShot.key]: {
+                                                    displayName: recipientSnapShot.val().displayName || 'Anonymous',
+                                                    role: 'member'
+                                                }
+                                            }).then(() => {
+                                                return admin.database().ref('messages/' + recipientSnapShot.key).push().set(
+                                                    Object.assign({},
+                                                        event.data.val(),
+                                                        {
+                                                            conversation_id: conversation_id,
+                                                            deliveredAt: Date.now()
+                                                        },
+                                                        //__response MUST be set to true to avoid recursion
+                                                        {
+                                                            __response: true
+                                                        }
+                                                    )
+                                                ).then(resolve)
+                                            })
+                                    })
+                            }
+
+                        })
                     })
-                })
-            }
+                }
+                else if(recipientList instanceof Object){
+                    Object.keys(recipientList).map((identifier) => {
+                        return admin.database().ref('users/' + identifier).once('value', (recipientSnapShot) => {
+                            if(recipientSnapShot.val()){
+                                return conversation.child('members')
+                                    .update({
+                                        [identifier]: {
+                                            displayName: recipientSnapShot.val().displayName || 'Anonymous',
+                                            role: 'member'
+                                        }
+                                    }).then(() => {
+                                        return admin.database().ref('messages/' + identifier).push().set(
+                                            Object.assign({},
+                                                event.data.val(),
+                                                {
+                                                    conversation_id: conversation_id,
+                                                    deliveredAt: Date.now()
+                                                },
+                                                //__response MUST be set to true to avoid recursion
+                                                {
+                                                    __response: true
+                                                }
+                                            )
+                                        ).then(resolve)
+                                    })
+                            }
+                            else {
+                                return admin.database().ref().child('users').orderByChild('displayName').equalTo(identifier)
+                                    .once('child_added', (recipientSnapShot) => {
+                                        return conversation.child('members')
+                                            .update({
+                                                [recipientSnapShot.key]: {
+                                                    displayName: recipientSnapShot.val().displayName || 'Anonymous',
+                                                    role: 'member'                                                                        }
+                                            }).then(() => {
+                                                return admin.database().ref('messages/' + recipientSnapShot.key).push().set(
+                                                    Object.assign({},
+                                                        event.data.val(),
+                                                        {
+                                                            conversation_id: conversation_id,
+                                                            deliveredAt: Date.now()
+                                                        },
+                                                        //__response MUST be set to true to avoid recursion
+                                                        {
+                                                            __response: true
+                                                        }
+                                                    )
+                                                ).then(resolve)
+                                            })
+                                    })
+                            }
+                        })
+                    })
+                }
+            })
     }
 }
