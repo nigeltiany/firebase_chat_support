@@ -31,7 +31,7 @@
                             </v-list-tile-avatar>
                             <v-list-tile-content>
                                 <v-list-tile-title>
-                                    {{ lastMessageBySender(conversation).title }}<!-- <span v-if="unreadMessagesByConversation" class="grey&#45;&#45;text text&#45;&#45;lighten-1">{{ unreadMessagesByConversation[conversation].length }}</span>-->
+                                    {{ lastMessageBySender(conversation).subject }}<!-- <span v-if="unreadMessagesByConversation" class="grey&#45;&#45;text text&#45;&#45;lighten-1">{{ unreadMessagesByConversation[conversation].length }}</span>-->
                                 </v-list-tile-title>
                                 <v-list-tile-sub-title>
                                     <span class='grey--text text--darken-2'>{{ lastMessageBySender(conversation).participants }} </span> — {{ lastMessageBySender(conversation).message }}
@@ -86,10 +86,15 @@
                     firebase.subscribeToMessages((message) => {
                         if(!this.messages[message.conversation_id]){
                             this.messages[message.conversation_id] = {}
-                            Vue.set(this.messages[message.conversation_id], message.id, message)
+                            Object.assign(this.messages[message.conversation_id], { [message.id]: message })
                         }
                         else if(this.messages[message.conversation_id]){
-                            Vue.set(this.messages[message.conversation_id], message.id, message)
+                            if(this.messages[message.conversation_id][message.id]){
+                                Vue.set(this.messages[message.conversation_id], message.id, message)
+                            }
+                            else {
+                                Object.assign(this.messages[message.conversation_id], { [message.id]: message })
+                            }
                         }
 
                         if (!message.read && (message.__response || message.auto)) {
@@ -105,14 +110,14 @@
         },
         methods: {
             conversationMembers(array) {
-                if(array){
-                    if(firebase.user().displayName) {
-                        array.splice(array.indexOf(firebase.user().displayName), 0).join(', ')
-                    }
-                    else {
-                        array.splice(array.indexOf('Anonymous'), 0).join(', ')
-                    }
-                }
+//                if(array){
+//                    if(firebase.user().displayName) {
+//                        array.splice(array.indexOf(firebase.user().displayName), 0).join(', ')
+//                    }
+//                    else {
+//                        array.splice(array.indexOf('Anonymous'), 0).join(', ')
+//                    }
+//                }
             },
             userMessages() {
                 return Object.keys(this.messages)
