@@ -14,6 +14,9 @@ module.exports = {
         link: [
             { rel: 'icon', type: 'image/x-icon', href: 'favicon.ico' },
             { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
+        ],
+        script: [
+            { src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBbFKZ-9zeOXWDNo7l_Ym6br7BStJGjUoQ&libraries=places&callback=initAutocomplete' }
         ]
     },
     srcDir: clientSourceDir,
