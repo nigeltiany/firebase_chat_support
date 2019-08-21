@@ -150,6 +150,8 @@
         z-index: 1;
     #chat-dialog
         position relative
+        display: flex;
+        flex-direction: column;
     .space_top
         margin-top 56px !important
     .list__tile__sub-title
@@ -159,7 +161,7 @@
         margin 0 auto
         padding 0
         position relative
-        height calc(100% - 48px)
+        height 100%
         overflow hidden;
         width: 100%
     #chat-dialog
