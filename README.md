@@ -19,6 +19,15 @@ $ npm start
 $ npm run generate
 ```
 
+![screenshot](screenshot.png)
+
 One Chat Agent required on the firebase database
+![initialSetup](one_agent_required.png)
+
+Features
+* Chat Agent smart routing
+* Guest Welcome message
+* Conversation Creation (incomplete)
+* Responsive Design (somewhat)
 
 For detailed explanation on how things work, check out the [Nuxt.js](https://github.com/nuxt/nuxt.js) and [Vuetify.js](https://vuetifyjs.com/) documentation.
