@@ -8,12 +8,13 @@ export default new class firebase {
     constructor() {
         this.firebase = createFireBase({
             config: {
-                apiKey: "AIzaSyA2qhaVfG2P7FlfZP7x80UysSiLrQr1ZZ4",
-                authDomain: "lawn-care-5feaf.firebaseapp.com",
-                databaseURL: "https://lawn-care-5feaf.firebaseio.com",
-                projectId: "lawn-care-5feaf",
-                storageBucket: "lawn-care-5feaf.appspot.com",
-                messagingSenderId: "517689819608"
+                apiKey: "AIzaSyD93nQf8GrPA9GnzeeNsKl37PnSPTfH-Xk",
+                authDomain: "the-confab-roots.firebaseapp.com",
+                databaseURL: "https://the-confab-roots.firebaseio.com",
+                projectId: "the-confab-roots",
+                storageBucket: "",
+                messagingSenderId: "788950251500",
+                appId: "1:788950251500:web:da50dff23bc99e57"
             }
         })
 

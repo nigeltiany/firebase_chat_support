@@ -110,14 +110,14 @@
         },
         methods: {
             conversationMembers(array) {
-//                if(array){
-//                    if(firebase.user().displayName) {
-//                        array.splice(array.indexOf(firebase.user().displayName), 0).join(', ')
-//                    }
-//                    else {
-//                        array.splice(array.indexOf('Anonymous'), 0).join(', ')
-//                    }
-//                }
+               if(array){
+                   if(firebase.user().displayName) {
+                       array.splice(array.indexOf(firebase.user().displayName), 0).join(', ')
+                   }
+                   else {
+                       array.splice(array.indexOf('Anonymous'), 0).join(', ')
+                   }
+               }
             },
             userMessages() {
                 return Object.keys(this.messages)

@@ -1,5 +1,5 @@
-const SocketCluster = require('socketcluster').SocketCluster;
-const start = () => new SocketCluster({
+const SocketCluster = require('socketcluster');
+const start = () => new SocketCluster.create({
     // workers: 1, // Number of worker processes
     // brokers: 1, // Number of broker processes
     port: 8000, // The port number on which your server should listen

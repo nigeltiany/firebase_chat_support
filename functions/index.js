@@ -1,6 +1,9 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-admin.initializeApp(functions.config().firebase);
+admin.initializeApp({
+  credential: admin.credential.applicationDefault(),
+  databaseURL: 'https://the-confab-roots.firebaseio.com'
+});
 
 exports.welcome_new_user = require('./welcome-new-users')
 exports.messenger = require('./messenger')

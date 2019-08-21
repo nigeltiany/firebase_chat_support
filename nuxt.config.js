@@ -16,7 +16,7 @@ module.exports = {
             { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
         ],
         script: [
-            { src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBbFKZ-9zeOXWDNo7l_Ym6br7BStJGjUoQ&libraries=places&callback=initAutocomplete' }
+            { src: 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB2HVq5gvnkTo-O-YnvntxsvDW-vH0CwTM&libraries=places' }
         ]
     },
     srcDir: clientSourceDir,
@@ -45,7 +45,9 @@ module.exports = {
     css: [
         { src: '~assets/style/app.styl', lang: 'styl' }
     ],
+    ssr: false,
     generate: {
+        ssr: false,
         dir: '.static_client',
         minify: {
             collapseBooleanAttributes: true,

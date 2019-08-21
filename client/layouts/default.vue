@@ -1,5 +1,5 @@
 <template>
-  <v-app toolbar v-resize:debounce="windowResize">
+  <v-app toolbar>
     <v-navigation-drawer class="hidden-md-and-up" persistent fixed :clipped="clipped" v-model="drawer">
       <v-list>
         <v-list-tile v-for="(link, i) in drawerLinks" :key="i" :to="link.to">
@@ -31,11 +31,9 @@
 
 <script>
 import chat from '../components/chat.vue'
-import resize from 'vue-resize-directive'
 
 export default {
     directives: {
-        resize,
     },
     components: {
         chat

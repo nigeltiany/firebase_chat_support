@@ -1,6 +1,6 @@
 # testing
 
-> Nuxt.js + Vuetify.js project
+> Nuxt.js + Vuetify.js project Node v8
 
 ## Build Setup
 
@@ -18,5 +18,7 @@ $ npm start
 # generate static project
 $ npm run generate
 ```
+
+One Chat Agent required on the firebase database
 
 For detailed explanation on how things work, check out the [Nuxt.js](https://github.com/nuxt/nuxt.js) and [Vuetify.js](https://vuetifyjs.com/) documentation.
