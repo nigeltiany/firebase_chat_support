@@ -5,7 +5,7 @@
             <v-icon>chat</v-icon>
             <v-icon>close</v-icon>
         </v-btn>
-        <v-card id="chat-dialog">
+        <v-card id="chat-dialog" style="height: unset">
             <v-toolbar id="chat-tool-bar" dark class="primary" :fixed="fullscreen">
                 <v-btn icon @click.native="viewAllMessages = true" dark :class="{ hidden: viewAllMessages }">
                     <v-icon>arrow_back</v-icon>
@@ -110,14 +110,14 @@
         },
         methods: {
             conversationMembers(array) {
-               if(array){
-                   if(firebase.user().displayName) {
-                       array.splice(array.indexOf(firebase.user().displayName), 0).join(', ')
-                   }
-                   else {
-                       array.splice(array.indexOf('Anonymous'), 0).join(', ')
-                   }
-               }
+               // if(array){
+               //     if(firebase.user().displayName) {
+               //         array.splice(array.indexOf(firebase.user().displayName), 0).join(', ')
+               //     }
+               //     else {
+               //         array.splice(array.indexOf('Anonymous'), 0).join(', ')
+               //     }
+               // }
             },
             userMessages() {
                 return Object.keys(this.messages)
@@ -159,19 +159,24 @@
         margin 0 auto
         padding 0
         position relative
-        height 100%
+        height calc(100% - 48px)
         overflow hidden;
         width: 100%
     #chat-dialog
         overflow: hidden !important
         position: absolute;
+    @media only screen and (min-width: 768px) {
+        #chat-dialog {
+            height: 75vh !important
+        }
+    }
     .dialog--persistent
         box-shadow unset !important
         #chat-dialog
             right: 16px;
             bottom: 85px;
             width: 350px;
-            max-height: 80vh;
+            max-height: 75vh;
         #chat-list
             max-height: calc(80vh - 48px);
     .dialog--fullscreen
