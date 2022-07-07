@@ -16,7 +16,7 @@
     "lodash.sortby": "^4.7.0",
     "lodash.takeright": "^4.1.1",
     "lodash.uniqby": "^4.7.0",
-    "moment": "^2.18.1",
+    "moment": "^2.29.4",
     "nuxt": "^1.0.0-alpha.5",
     "promise-polyfill": "^6.0.2",
     "socketcluster": "^14.3.5",
