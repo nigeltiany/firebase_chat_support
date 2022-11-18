@@ -17,7 +17,7 @@
     "lodash.takeright": "^4.1.1",
     "lodash.uniqby": "^4.7.0",
     "moment": "^2.18.1",
-    "nuxt": "^1.0.0-alpha.5",
+    "nuxt": "^3.0.0",
     "promise-polyfill": "^6.0.2",
     "socketcluster": "^14.3.5",
     "textarea-autogrow": "^1.0.0",
